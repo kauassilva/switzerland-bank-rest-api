@@ -8,8 +8,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import com.switzerlandbank.api.entities.Address;
 import com.switzerlandbank.api.entities.Client;
 import com.switzerlandbank.api.entities.enums.Gender;
+import com.switzerlandbank.api.repositories.AddressRepository;
 import com.switzerlandbank.api.repositories.ClientRepository;
 
 @Configuration
@@ -18,14 +20,21 @@ public class TestConfig implements CommandLineRunner {
 
 	@Autowired
 	private ClientRepository clientRepository;
+	
+	@Autowired
+	private AddressRepository addressRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
 		
-		Client client1 = new Client(null, "Elenor White", "12345678911", "Elisa White", LocalDate.parse("2023-11-05"), Gender.MALE, "elenor@gmail.com", "123456789");
-		Client client2 = new Client(null, "Rayane Blue", "11987645321", "Nora Blue", LocalDate.parse("2014-01-01"), Gender.FEMALE, "rayane@gmail.com", "987654431");
-		Client client3 = new Client(null, "Olave Green", "12345678911", "Alice Green", LocalDate.parse("2005-11-20"), Gender.OTHER, "Olave@gmail.com", "987321654");
+		Address address1 = new Address(null, "Av. Castelo Branco, 1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000");
+		Address address2 = new Address(null, "R. Cento e Cinquenta e Dois, 196", "Laranjal", "Volta Redonda", "Rio de Janeiro", "27255020");
 		
+		Client client1 = new Client(null, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123", address1);
+		Client client2 = new Client(null, "Carlos Pereira", "11122233344", "Teresa Pereira", LocalDate.parse("1975-10-10"), Gender.OTHER, "carlospereira@gmail.com", "CarlosPereira123", address2);
+		Client client3 = new Client(null, "Ana Santos", "98765432100", "Beatriz Santos", LocalDate.parse("1990-02-20"), Gender.FEMALE, "anasantos@example.com", "AnaSantos123", address1);
+		
+		addressRepository.saveAll(Arrays.asList(address1, address2));
 		clientRepository.saveAll(Arrays.asList(client1, client2, client3));
 		
 	}

@@ -10,6 +10,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -28,11 +30,15 @@ public class Client implements Serializable {
 	private String email;
 	private String password;
 	
+	@ManyToOne
+	@JoinColumn(name = "address_id")
+	private Address address;
+	
 	public Client() {
 	}
 
-	public Client(Long id, String name, String cpf, String motherName, LocalDate dateBirth, Gender gender, String email,
-			String password) {
+	public Client(Long id, String name, String cpf, String motherName, LocalDate dateBirth, Gender gender,
+			String email, String password, Address address) {
 		this.id = id;
 		this.name = name;
 		this.cpf = cpf;
@@ -41,6 +47,7 @@ public class Client implements Serializable {
 		this.setGender(gender);
 		this.email = email;
 		this.password = password;
+		this.address = address;
 	}
 
 	public Long getId() {
@@ -107,6 +114,14 @@ public class Client implements Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
 	}
 
 	@Override
