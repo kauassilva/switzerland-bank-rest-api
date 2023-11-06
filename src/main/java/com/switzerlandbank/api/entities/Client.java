@@ -6,13 +6,16 @@ import java.util.Objects;
 
 import com.switzerlandbank.api.entities.enums.Gender;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tb_client")
@@ -22,17 +25,29 @@ public class Client implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@NotNull(message = "cannot be null")
 	private String name;
+	@NotNull(message = "cannot be null")
 	private String cpf;
+	@NotNull(message = "cannot be null")
 	private String motherName;
+	@NotNull(message = "cannot be null")
 	private LocalDate dateBirth;
+	@NotNull(message = "cannot be null")
 	private Integer gender;
+	@NotNull(message = "cannot be null")
 	private String email;
+	@NotNull(message = "cannot be null")
 	private String password;
 	
+	@NotNull(message = "cannot be null")
 	@ManyToOne
 	@JoinColumn(name = "address_id")
 	private Address address;
+	
+	@OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
+	private Balance balance;
 	
 	public Client() {
 	}
@@ -122,6 +137,14 @@ public class Client implements Serializable {
 
 	public void setAddress(Address address) {
 		this.address = address;
+	}
+
+	public Balance getBalance() {
+		return balance;
+	}
+
+	public void setBalance(Balance balance) {
+		this.balance = balance;
 	}
 
 	@Override

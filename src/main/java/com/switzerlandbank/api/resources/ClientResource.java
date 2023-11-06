@@ -18,6 +18,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.switzerlandbank.api.entities.Client;
 import com.switzerlandbank.api.services.ClientService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/clients")
 public class ClientResource {
@@ -38,7 +40,7 @@ public class ClientResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Client> insert(@RequestBody Client obj) {
+	public ResponseEntity<Client> insert(@RequestBody @Valid Client obj) {
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).body(obj);

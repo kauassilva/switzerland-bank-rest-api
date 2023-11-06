@@ -27,6 +27,8 @@ public class Address implements Serializable {
 	@NotNull(message = "cannot be null")
 	private String street;
 	@NotNull(message = "cannot be null")
+	private String number;
+	@NotNull(message = "cannot be null")
 	private String neighborhood;
 	@NotNull(message = "cannot be null")
 	private String city;
@@ -42,9 +44,10 @@ public class Address implements Serializable {
 	public Address() {
 	}
 
-	public Address(Long id, String street, String neighborhood, String city, String state, String postalCode) {
+	public Address(Long id, String street, String number, String neighborhood, String city, String state, String postalCode) {
 		this.id = id;
 		this.street = street;
+		this.number = number;
 		this.neighborhood = neighborhood;
 		this.city = city;
 		this.state = state;
@@ -65,6 +68,14 @@ public class Address implements Serializable {
 
 	public void setStreet(String street) {
 		this.street = street;
+	}
+
+	public String getNumber() {
+		return number;
+	}
+
+	public void setNumber(String number) {
+		this.number = number;
 	}
 
 	public String getNeighborhood() {

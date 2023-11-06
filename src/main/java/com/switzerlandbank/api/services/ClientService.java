@@ -1,5 +1,7 @@
 package com.switzerlandbank.api.services;
 
+import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import com.switzerlandbank.api.entities.Balance;
 import com.switzerlandbank.api.entities.Client;
 import com.switzerlandbank.api.repositories.ClientRepository;
 import com.switzerlandbank.api.services.exceptions.DatabaseException;
@@ -30,6 +33,8 @@ public class ClientService {
 	}
 	
 	public Client insert(Client obj) {
+		Balance balance = new Balance(null, BigDecimal.TEN, Instant.now(), obj);
+		obj.setBalance(balance);
 		return repository.save(obj);
 	}
 	
