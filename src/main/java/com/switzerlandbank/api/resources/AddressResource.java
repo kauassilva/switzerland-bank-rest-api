@@ -18,6 +18,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.switzerlandbank.api.entities.Address;
 import com.switzerlandbank.api.services.AddressService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/addresses")
 public class AddressResource {
@@ -38,7 +40,7 @@ public class AddressResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Address> insert(@RequestBody Address obj) {
+	public ResponseEntity<Address> insert(@RequestBody @Valid Address obj) {
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).body(obj);

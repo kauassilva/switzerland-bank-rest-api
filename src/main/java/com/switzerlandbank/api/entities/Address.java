@@ -13,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tb_address")
@@ -22,10 +23,16 @@ public class Address implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@NotNull(message = "cannot be null")
 	private String street;
+	@NotNull(message = "cannot be null")
 	private String neighborhood;
+	@NotNull(message = "cannot be null")
 	private String city;
+	@NotNull(message = "cannot be null")
 	private String state;
+	@NotNull(message = "cannot be null")
 	private String postalCode;
 	
 	@JsonIgnore
