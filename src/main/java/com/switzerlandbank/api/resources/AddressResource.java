@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.switzerlandbank.api.entities.Address;
-import com.switzerlandbank.api.services.AddressService;
+import com.switzerlandbank.api.services.AddressServiceImpl;
 
 import jakarta.validation.Valid;
 
@@ -25,7 +25,7 @@ import jakarta.validation.Valid;
 public class AddressResource {
 	
 	@Autowired
-	private AddressService service;
+	private AddressServiceImpl service;
 	
 	@GetMapping
 	public ResponseEntity<List<Address>> findAll() {

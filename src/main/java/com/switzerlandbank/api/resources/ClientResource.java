@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.switzerlandbank.api.entities.Client;
-import com.switzerlandbank.api.services.ClientService;
+import com.switzerlandbank.api.services.ClientServiceImpl;
 
 import jakarta.validation.Valid;
 
@@ -25,7 +25,7 @@ import jakarta.validation.Valid;
 public class ClientResource {
 	
 	@Autowired
-	private ClientService service;
+	private ClientServiceImpl service;
 	
 	@GetMapping
 	public ResponseEntity<List<Client>> findAll() {
@@ -42,6 +42,7 @@ public class ClientResource {
 	@PostMapping
 	public ResponseEntity<Client> insert(@RequestBody @Valid Client obj) {
 		obj = service.insert(obj);
+		obj.setAddress(obj.getAddress());
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).body(obj);
 	}
