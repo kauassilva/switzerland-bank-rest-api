@@ -1,16 +1,11 @@
 package com.switzerlandbank.api.services;
 
-import java.math.BigDecimal;
-import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.switzerlandbank.api.entities.Balance;
 import com.switzerlandbank.api.entities.Client;
 import com.switzerlandbank.api.repositories.ClientRepository;
 import com.switzerlandbank.api.services.exceptions.ResourceNotFoundException;
@@ -34,15 +29,10 @@ public class ClientServiceImpl implements ClientService {
 		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	@Override
 	public Client insert(Client obj) {
-		Balance balance = new Balance(null, BigDecimal.TEN, Instant.now(), obj);
-		obj.setBalance(balance);
-		obj = repository.save(obj);
-		obj = repository.getReferenceById(obj.getId());
-		obj.setAddress(obj.getAddress());
-		return obj;
+		obj.getAddress().setClient(obj);
+		return repository.save(obj);
 	}
 	
 	@Override
@@ -58,7 +48,7 @@ public class ClientServiceImpl implements ClientService {
 		try {
 			Client entity = repository.getReferenceById(id);
 			updateData(entity, obj);
-			return repository.save(obj);			
+			return repository.save(entity);			
 		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException(id);
 		}
@@ -73,6 +63,15 @@ public class ClientServiceImpl implements ClientService {
 		entity.setGender(obj.getGender());
 		entity.setEmail(obj.getEmail());
 		entity.setPassword(obj.getPassword());
+		
+		if (obj.getAddress() != null) {
+			entity.getAddress().setStreet(obj.getAddress().getStreet());
+			entity.getAddress().setNumber(obj.getAddress().getNumber());
+			entity.getAddress().setNeighborhood(obj.getAddress().getNeighborhood());
+			entity.getAddress().setCity(obj.getAddress().getCity());
+			entity.getAddress().setState(obj.getAddress().getState());
+			entity.getAddress().setPostalCode(obj.getAddress().getPostalCode());
+		}
 	}
 
 }

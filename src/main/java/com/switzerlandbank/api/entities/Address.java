@@ -1,9 +1,7 @@
 package com.switzerlandbank.api.entities;
 
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -11,7 +9,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
@@ -38,13 +37,14 @@ public class Address implements Serializable {
 	private String postalCode;
 	
 	@JsonIgnore
- 	@OneToMany(mappedBy = "address")
-	private Set<Client> clients = new HashSet<>();
+ 	@OneToOne
+ 	@MapsId
+	private Client client;
 	
 	public Address() {
 	}
 
-	public Address(Long id, String street, String number, String neighborhood, String city, String state, String postalCode) {
+	public Address(Long id, String street, String number, String neighborhood, String city, String state, String postalCode, Client client) {
 		this.id = id;
 		this.street = street;
 		this.number = number;
@@ -52,6 +52,7 @@ public class Address implements Serializable {
 		this.city = city;
 		this.state = state;
 		this.postalCode = postalCode;
+		this.client = client;
 	}
 
 	public Long getId() {
@@ -110,8 +111,12 @@ public class Address implements Serializable {
 		this.postalCode = postalCode;
 	}
 
-	public Set<Client> getClients() {
-		return clients;
+	public Client getClient() {
+		return client;
+	}
+
+	public void setClient(Client client) {
+		this.client = client;
 	}
 
 	@Override

@@ -8,12 +8,9 @@ import com.switzerlandbank.api.entities.enums.Gender;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
@@ -42,19 +39,14 @@ public class Client implements Serializable {
 	@NotNull(message = "cannot be null")
 	private String password;
 	
-	@NotNull(message = "cannot be null")
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "address_id")
-	private Address address;
-	
 	@OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
-	private Balance balance;
+	private Address address;
 	
 	public Client() {
 	}
 
 	public Client(Long id, String name, String cpf, String motherName, LocalDate dateBirth, Gender gender,
-			String email, String password, Address address) {
+			String email, String password) {
 		this.id = id;
 		this.name = name;
 		this.cpf = cpf;
@@ -63,7 +55,6 @@ public class Client implements Serializable {
 		this.setGender(gender);
 		this.email = email;
 		this.password = password;
-		this.address = address;
 	}
 
 	public Long getId() {
@@ -138,14 +129,6 @@ public class Client implements Serializable {
 
 	public void setAddress(Address address) {
 		this.address = address;
-	}
-
-	public Balance getBalance() {
-		return balance;
-	}
-
-	public void setBalance(Balance balance) {
-		this.balance = balance;
 	}
 
 	@Override

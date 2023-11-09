@@ -42,7 +42,6 @@ public class ClientResource {
 	@PostMapping
 	public ResponseEntity<Client> insert(@RequestBody @Valid Client obj) {
 		obj = service.insert(obj);
-		obj.setAddress(obj.getAddress());
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).body(obj);
 	}

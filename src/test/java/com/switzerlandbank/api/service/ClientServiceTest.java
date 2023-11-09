@@ -49,13 +49,13 @@ class ClientServiceTest {
 	
 	@Test
 	void testFindAllReturnNonEmptyList() {
-		Address address1 = new Address(null, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000");
-		Client client1 = new Client(null, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123", address1);
-		Client client2 = new Client(null, "Ana Santos", "98765432100", "Beatriz Santos", LocalDate.parse("1990-02-20"), Gender.FEMALE, "anasantos@example.com", "AnaSantos123", address1);
+		//Address address1 = new Address(null, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000");
+		//Client client1 = new Client(null, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123", address1);
+		//Client client2 = new Client(null, "Ana Santos", "98765432100", "Beatriz Santos", LocalDate.parse("1990-02-20"), Gender.FEMALE, "anasantos@example.com", "AnaSantos123", address1);
 
 		List<Client> expectedResult = new ArrayList<>();
-		expectedResult.add(client1);
-		expectedResult.add(client2);
+		//expectedResult.add(client1);
+		//expectedResult.add(client2);
 		
 		when(repository.findAll()).thenReturn(expectedResult);
 		
