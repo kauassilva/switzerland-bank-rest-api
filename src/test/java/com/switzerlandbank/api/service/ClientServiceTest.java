@@ -98,7 +98,7 @@ class ClientServiceTest {
 	}
 	
 	@Test
-	void testInsert() {
+	void testInsertSuccess() {
 		Client expectedClient = new Client(1L, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
 		Address address = new Address(1L, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", expectedClient);
 		expectedClient.setAddress(address);

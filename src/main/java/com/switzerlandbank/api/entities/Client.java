@@ -39,6 +39,7 @@ public class Client implements Serializable {
 	@NotNull(message = "cannot be null")
 	private String password;
 	
+	@NotNull(message = "address fields cannot be null")
 	@OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
 	private Address address;
 	
