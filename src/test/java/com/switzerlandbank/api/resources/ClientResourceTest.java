@@ -237,4 +237,21 @@ class ClientResourceTest {
 		assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
 	}
 	
+	@Test
+	void testUpdate_ReturnsCorrectContent() throws Exception {
+		Client client = new Client(1L, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
+		Address address = new Address(1L, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", client);
+		client.setAddress(address);
+		
+		when(service.update(client, 1L)).thenReturn(client);
+		
+		MockHttpServletResponse response = mockMvc.perform(put("/clients/1")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(jsonClient.write(client).getJson()))
+				.andReturn().getResponse();
+		response.setCharacterEncoding("UTF-8");
+		
+		assertThat(response.getContentAsString()).isEqualTo(jsonClient.write(client).getJson());
+	}
+	
 }

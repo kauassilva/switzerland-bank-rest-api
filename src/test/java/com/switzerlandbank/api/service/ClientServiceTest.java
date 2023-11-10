@@ -45,7 +45,7 @@ class ClientServiceTest {
 	}
 	
 	@Test
-	void testFindAllReturnNonEmptyList() {
+	void testFindAll_ReturnNonEmptyList() {
 		Client client1 = new Client(1L, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
 		Client client2 = new Client(2L, "Carlos Pereira", "11122233344", "Teresa Pereira", LocalDate.parse("1975-10-10"), Gender.OTHER, "carlospereira@gmail.com", "CarlosPereira123");
 		Client client3 = new Client(3L, "Ana Santos", "98765432100", "Beatriz Santos", LocalDate.parse("1990-02-20"), Gender.FEMALE, "anasantos@example.com", "AnaSantos123");
@@ -69,14 +69,14 @@ class ClientServiceTest {
 	}
 	
 	@Test
-	void testFindAllReturnEmptyList() {
+	void testFindAll_ReturnEmptyList() {
 		when(repository.findAll()).thenReturn(Collections.emptyList());
 		List<Client> result = service.findAll();
 		assertTrue(result.isEmpty());
 	}
 	
 	@Test
-	void testFindByIdSuccess() {
+	void testFindById_ReturnClient() {
 		Client expectedClient = new Client(1L, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
 		Address address = new Address(1L, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", expectedClient);
 		expectedClient.setAddress(address);
@@ -87,7 +87,7 @@ class ClientServiceTest {
 	}
 
 	@Test
-	void testFindByIdThrowsException() {
+	void testFindById_ThrowsResourceNotFoundException() {
 		Client client = new Client(1L, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
 		Address address = new Address(1L, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", client);
 		client.setAddress(address);
@@ -98,7 +98,7 @@ class ClientServiceTest {
 	}
 	
 	@Test
-	void testInsertSuccess() {
+	void testInsert_Success() {
 		Client expectedClient = new Client(1L, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
 		Address address = new Address(1L, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", expectedClient);
 		expectedClient.setAddress(address);
@@ -111,20 +111,20 @@ class ClientServiceTest {
 	}
 	
 	@Test
-	void testDeleteSuccess() {
+	void testDelete_Success() {
 		when(repository.existsById(1L)).thenReturn(true);
 		service.delete(1L);
 		verify(repository, times(1)).deleteById(1L);
 	}
 	
 	@Test
-	void testDeleteThrowsException() {
+	void testDelete_ThrowsResourceNotFoundException() {
 		when(repository.existsById(1L)).thenReturn(true);
 		assertThrows(ResourceNotFoundException.class, () -> service.delete(2L));
 	}
 	
 	@Test
-	void testUpdateSuccess() {
+	void testUpdate_Success() {
 		Client updatedClient = new Client(1L, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
 		Address address1 = new Address(1L, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", updatedClient);
 		updatedClient.setAddress(address1);
@@ -142,7 +142,7 @@ class ClientServiceTest {
 	}
 	
 	@Test
-	void testUpdateThrowsException() {
+	void testUpdate_ThrowsResourceNotFoundException() {
 		Client client = new Client(null, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
 		Address address1 = new Address(null, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", client);
 		client.setAddress(address1);
