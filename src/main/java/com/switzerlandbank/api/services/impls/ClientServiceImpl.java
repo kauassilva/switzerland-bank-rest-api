@@ -1,4 +1,4 @@
-package com.switzerlandbank.api.services;
+package com.switzerlandbank.api.services.impls;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.switzerlandbank.api.entities.Client;
 import com.switzerlandbank.api.repositories.ClientRepository;
+import com.switzerlandbank.api.services.ClientService;
 import com.switzerlandbank.api.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;

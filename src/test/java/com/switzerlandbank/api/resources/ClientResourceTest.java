@@ -30,8 +30,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.switzerlandbank.api.entities.Address;
 import com.switzerlandbank.api.entities.Client;
 import com.switzerlandbank.api.entities.enums.Gender;
-import com.switzerlandbank.api.services.ClientServiceImpl;
 import com.switzerlandbank.api.services.exceptions.ResourceNotFoundException;
+import com.switzerlandbank.api.services.impls.ClientServiceImpl;
 
 @WebMvcTest(controllers = ClientResource.class)
 @AutoConfigureJsonTesters

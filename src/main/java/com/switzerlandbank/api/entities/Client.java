@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.switzerlandbank.api.entities.enums.Gender;
 
 import jakarta.persistence.CascadeType;
@@ -42,6 +43,10 @@ public class Client implements Serializable {
 	@NotNull(message = "address fields cannot be null")
 	@OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
 	private Address address;
+	
+	@JsonIgnore
+	@OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
+	private Account account;
 	
 	public Client() {
 	}
@@ -130,6 +135,14 @@ public class Client implements Serializable {
 
 	public void setAddress(Address address) {
 		this.address = address;
+	}
+	
+	public Account getAccount() {
+		return account;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
 	}
 
 	@Override

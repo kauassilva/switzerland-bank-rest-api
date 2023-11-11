@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.switzerlandbank.api.entities.Client;
-import com.switzerlandbank.api.services.ClientServiceImpl;
+import com.switzerlandbank.api.services.impls.ClientServiceImpl;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping(value = "/clients")
+@RequestMapping(value = "/api/clients")
 public class ClientResource {
 	
 	@Autowired

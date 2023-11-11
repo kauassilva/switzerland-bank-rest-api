@@ -9,25 +9,25 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.switzerlandbank.api.entities.Address;
-import com.switzerlandbank.api.services.impls.AddressServiceImpl;
+import com.switzerlandbank.api.entities.Account;
+import com.switzerlandbank.api.services.impls.AccountServiceImpl;
 
 @RestController
-@RequestMapping(value = "/api/addresses")
-public class AddressResource {
+@RequestMapping(value = "/api/accounts")
+public class AccountResource {
 	
 	@Autowired
-	private AddressServiceImpl service;
+	private AccountServiceImpl service;
 	
 	@GetMapping
-	public ResponseEntity<List<Address>> findAll() {
-		List<Address> list = service.findAll();
+	public ResponseEntity<List<Account>> findAll() {
+		List<Account> list = service.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 	
-	@GetMapping(value = "/{id}")
-	public ResponseEntity<Address> findById(@PathVariable Long id) {
-		Address obj = service.findById(id);
+	@GetMapping("/{id}")
+	public ResponseEntity<Account> findById(@PathVariable Long id) {
+		Account obj = service.findById(id);
 		return ResponseEntity.ok().body(obj);
 	}
 

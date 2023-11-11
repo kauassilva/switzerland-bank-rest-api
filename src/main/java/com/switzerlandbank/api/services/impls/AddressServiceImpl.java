@@ -1,4 +1,4 @@
-package com.switzerlandbank.api.services;
+package com.switzerlandbank.api.services.impls;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,9 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.switzerlandbank.api.entities.Address;
 import com.switzerlandbank.api.repositories.AddressRepository;
+import com.switzerlandbank.api.services.AddressService;
 import com.switzerlandbank.api.services.exceptions.ResourceNotFoundException;
-
-import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class AddressServiceImpl implements AddressService {
@@ -27,26 +26,6 @@ public class AddressServiceImpl implements AddressService {
 	public Address findById(Long id) {
 		Optional<Address> obj = repository.findById(id);
 		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
-	}
-	
-	@Override
-	public Address update(Address obj, Long id) {
-		try {
-			Address entity = repository.getReferenceById(id);
-			updateData(entity, obj);
-			return repository.save(entity);			
-		} catch (EntityNotFoundException e) {
-			throw new ResourceNotFoundException(id);
-		}
-	}
-
-	@Override
-	public void updateData(Address entity, Address obj) {
-		entity.setStreet(obj.getStreet());
-		entity.setNeighborhood(obj.getNeighborhood());
-		entity.setCity(obj.getCity());
-		entity.setState(obj.getState());
-		entity.setPostalCode(obj.getPostalCode());
 	}
 
 }
