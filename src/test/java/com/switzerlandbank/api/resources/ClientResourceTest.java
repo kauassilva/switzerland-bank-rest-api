@@ -58,7 +58,7 @@ class ClientResourceTest {
 		
 		when(service.findAll()).thenReturn(Lists.newArrayList(client));
 		
-		MockHttpServletResponse response = mockMvc.perform(get("/clients")
+		MockHttpServletResponse response = mockMvc.perform(get("/api/clients")
 				.accept(MediaType.APPLICATION_JSON))
 				.andReturn().getResponse();
 		
@@ -73,7 +73,7 @@ class ClientResourceTest {
 		
 		when(service.findAll()).thenReturn(Lists.newArrayList(client));
 		
-		MockHttpServletResponse response = mockMvc.perform(get("/clients")
+		MockHttpServletResponse response = mockMvc.perform(get("/api/clients")
 				.accept(MediaType.APPLICATION_JSON))
 				.andReturn().getResponse();
 		response.setCharacterEncoding("UTF-8");
@@ -85,7 +85,7 @@ class ClientResourceTest {
 	void testFindAll_ReturnsEmptyList() throws Exception {
 		when(service.findAll()).thenReturn(Collections.emptyList());
 		
-		MockHttpServletResponse response = mockMvc.perform(get("/clients")
+		MockHttpServletResponse response = mockMvc.perform(get("/api/clients")
 				.accept(MediaType.APPLICATION_JSON))
 				.andReturn().getResponse();
 		response.setCharacterEncoding("UTF-8");
@@ -101,7 +101,7 @@ class ClientResourceTest {
 		
 		when(service.findById(1L)).thenReturn(client);
 		
-		MockHttpServletResponse response = mockMvc.perform(get("/clients/1")
+		MockHttpServletResponse response = mockMvc.perform(get("/api/clients/1")
 				.accept(MediaType.APPLICATION_JSON))
 				.andReturn().getResponse();
 		
@@ -112,7 +112,7 @@ class ClientResourceTest {
 	void testFindById_ReturnsStatusNotFound() throws Exception {
 		when(service.findById(2L)).thenThrow(ResourceNotFoundException.class);
 		
-		MockHttpServletResponse response = mockMvc.perform(get("/clients/2")
+		MockHttpServletResponse response = mockMvc.perform(get("/api/clients/2")
 				.accept(MediaType.APPLICATION_JSON))
 				.andReturn().getResponse();
 		
@@ -127,7 +127,7 @@ class ClientResourceTest {
 		
 		when(service.findById(1L)).thenReturn(client);
 		
-		MockHttpServletResponse response = mockMvc.perform(get("/clients/1")
+		MockHttpServletResponse response = mockMvc.perform(get("/api/clients/1")
 				.accept(MediaType.APPLICATION_JSON))
 				.andReturn().getResponse();
 		response.setCharacterEncoding("UTF-8");
@@ -143,7 +143,7 @@ class ClientResourceTest {
 		
 		when(service.insert(client)).thenReturn(client);
 		
-		MockHttpServletResponse response = mockMvc.perform(post("/clients")
+		MockHttpServletResponse response = mockMvc.perform(post("/api/clients")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonClient.write(client).getJson()))
 				.andReturn().getResponse();
@@ -159,7 +159,7 @@ class ClientResourceTest {
 		
 		when(service.insert(client)).thenReturn(client);
 		
-		MockHttpServletResponse response = mockMvc.perform(post("/clients")
+		MockHttpServletResponse response = mockMvc.perform(post("/api/clients")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonClient.write(client).getJson()))
 				.andReturn().getResponse();
@@ -176,7 +176,7 @@ class ClientResourceTest {
 		
 		when(service.insert(client)).thenReturn(client);
 		
-		MockHttpServletResponse response = mockMvc.perform(post("/clients")
+		MockHttpServletResponse response = mockMvc.perform(post("/api/clients")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonClient.write(client).getJson()))
 				.andReturn().getResponse();
@@ -189,7 +189,7 @@ class ClientResourceTest {
 	void testDelete_ReturnsStatusNoContent() throws Exception {
 		doNothing().when(service).delete(1L);
 		
-		MockHttpServletResponse response = mockMvc.perform(delete("/clients/1"))
+		MockHttpServletResponse response = mockMvc.perform(delete("/api/clients/1"))
 				.andReturn().getResponse();
 		
 		assertThat(response.getStatus()).isEqualTo(HttpStatus.NO_CONTENT.value());
@@ -199,7 +199,7 @@ class ClientResourceTest {
 	void testDelete_ReturnsStatusNotFound() throws Exception {
 		doThrow(new ResourceNotFoundException(1L)).when(service).delete(1L);
 		
-		MockHttpServletResponse response = mockMvc.perform(delete("/clients/1"))
+		MockHttpServletResponse response = mockMvc.perform(delete("/api/clients/1"))
 				.andReturn().getResponse();
 		
 		assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
@@ -213,7 +213,7 @@ class ClientResourceTest {
 		
 		when(service.update(client, 1L)).thenReturn(client);
 		
-		MockHttpServletResponse response = mockMvc.perform(put("/clients/1")
+		MockHttpServletResponse response = mockMvc.perform(put("/api/clients/1")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonClient.write(client).getJson()))
 				.andReturn().getResponse();
@@ -229,7 +229,7 @@ class ClientResourceTest {
 		
 		doThrow(new ResourceNotFoundException(2L)).when(service).update(client, 2L);
 		
-		MockHttpServletResponse response = mockMvc.perform(put("/clients/2")
+		MockHttpServletResponse response = mockMvc.perform(put("/api/clients/2")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonClient.write(client).getJson()))
 				.andReturn().getResponse();
@@ -245,7 +245,7 @@ class ClientResourceTest {
 		
 		when(service.update(client, 1L)).thenReturn(client);
 		
-		MockHttpServletResponse response = mockMvc.perform(put("/clients/1")
+		MockHttpServletResponse response = mockMvc.perform(put("/api/clients/1")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonClient.write(client).getJson()))
 				.andReturn().getResponse();
