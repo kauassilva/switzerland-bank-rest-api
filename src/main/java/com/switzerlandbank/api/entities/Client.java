@@ -108,9 +108,7 @@ public class Client implements Serializable {
 	}
 
 	public void setGender(Gender gender) {
-		if (gender != null) {
-			this.gender = gender.getCode();
-		}
+		this.gender = gender.getCode();
 	}
 
 	public String getEmail() {
