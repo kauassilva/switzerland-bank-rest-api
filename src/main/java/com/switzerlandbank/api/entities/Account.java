@@ -3,6 +3,7 @@ package com.switzerlandbank.api.entities;
 import java.io.Serializable;
 import java.util.Objects;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,6 +25,9 @@ public class Account implements Serializable {
 	@OneToOne
 	@MapsId
 	private Client client;
+	
+	@OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
+	private Balance balance;
 	
 	public Account() {
 	}
@@ -56,6 +60,14 @@ public class Account implements Serializable {
 
 	public void setClient(Client client) {
 		this.client = client;
+	}
+
+	public Balance getBalance() {
+		return balance;
+	}
+
+	public void setBalance(Balance balance) {
+		this.balance = balance;
 	}
 
 	@Override

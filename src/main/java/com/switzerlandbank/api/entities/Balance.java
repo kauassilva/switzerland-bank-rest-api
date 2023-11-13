@@ -6,11 +6,14 @@ import java.time.Instant;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -26,13 +29,19 @@ public class Balance implements Serializable {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant lastUpdated;
 	
+	@JsonIgnore
+	@OneToOne
+	@MapsId
+	private Account account;
+	
 	public Balance() {
 	}
 
-	public Balance(Long id, BigDecimal amount, Instant lastUpdated) {
+	public Balance(Long id, BigDecimal amount, Instant lastUpdated, Account account) {
 		this.id = id;
 		this.amount = amount;
 		this.lastUpdated = lastUpdated;
+		this.setAccount(account);
 	}
 
 	public Long getId() {
@@ -57,6 +66,14 @@ public class Balance implements Serializable {
 
 	public void setLastUpdated(Instant lastUpdated) {
 		this.lastUpdated = lastUpdated;
+	}
+
+	public Account getAccount() {
+		return account;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
 	}
 
 	@Override
