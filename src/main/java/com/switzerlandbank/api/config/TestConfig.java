@@ -14,9 +14,12 @@ import com.switzerlandbank.api.entities.Account;
 import com.switzerlandbank.api.entities.Address;
 import com.switzerlandbank.api.entities.Balance;
 import com.switzerlandbank.api.entities.Client;
+import com.switzerlandbank.api.entities.PixKey;
 import com.switzerlandbank.api.entities.enums.Gender;
+import com.switzerlandbank.api.entities.enums.KeyType;
 import com.switzerlandbank.api.repositories.AccountRepository;
 import com.switzerlandbank.api.repositories.ClientRepository;
+import com.switzerlandbank.api.repositories.PixKeyRepository;
 
 @Configuration
 @Profile("test")
@@ -27,6 +30,9 @@ public class TestConfig implements CommandLineRunner {
 	
 	@Autowired
 	private AccountRepository accountRepository;
+	
+	@Autowired
+	private PixKeyRepository pixKeyRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -63,6 +69,17 @@ public class TestConfig implements CommandLineRunner {
 		account3.setBalance(balance3);
 		
 		accountRepository.saveAll(Arrays.asList(account1, account2, account3));
+		
+		PixKey pixKey1 = new PixKey(null, "12345678910", KeyType.CPF, account1);
+		PixKey pixKey2 = new PixKey(null, "joaosilva@example.com", KeyType.EMAIL, account1);
+		PixKey pixKey3 = new PixKey(null, "aB3dEfgH45iJkL6mN7oPqR8sTuvWxYz0", KeyType.RANDOM, account1);
+		
+		PixKey pixKey4 = new PixKey(null, "11122233344", KeyType.CPF, account2);
+		PixKey pixKey5 = new PixKey(null, "Zx9Yv8Uw7TlKj6Hg5FeD4CvBn2Mq1OpL", KeyType.RANDOM, account2);
+		
+		PixKey pixKey6 = new PixKey(null, "anasantos@example.com", KeyType.EMAIL, account3);
+		
+		pixKeyRepository.saveAll(Arrays.asList(pixKey1, pixKey2, pixKey3, pixKey4, pixKey5, pixKey6));
 		
 	}
 
