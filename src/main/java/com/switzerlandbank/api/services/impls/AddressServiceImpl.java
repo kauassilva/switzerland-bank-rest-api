@@ -28,4 +28,20 @@ public class AddressServiceImpl implements AddressService {
 		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 
+	@Override
+	public Address insert(Address address) {
+		return repository.save(address);
+	}
+
+	@Override
+	public Address update(Address entity, Address newDataObj) {
+		entity.setStreet(newDataObj.getStreet());
+		entity.setNumber(newDataObj.getNumber());
+		entity.setNeighborhood(newDataObj.getNeighborhood());
+		entity.setCity(newDataObj.getCity());
+		entity.setState(newDataObj.getState());
+		entity.setPostalCode(newDataObj.getPostalCode());
+		return repository.save(entity);
+	}
+
 }

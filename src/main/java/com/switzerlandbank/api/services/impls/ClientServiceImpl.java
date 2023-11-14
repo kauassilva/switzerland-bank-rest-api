@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.switzerlandbank.api.entities.Client;
 import com.switzerlandbank.api.repositories.ClientRepository;
+import com.switzerlandbank.api.services.AddressService;
 import com.switzerlandbank.api.services.ClientService;
 import com.switzerlandbank.api.services.exceptions.ResourceNotFoundException;
 
@@ -17,61 +18,59 @@ import jakarta.persistence.EntityNotFoundException;
 public class ClientServiceImpl implements ClientService {
 	
 	@Autowired
-	private ClientRepository repository;
+	private ClientRepository clientRepository;
+	
+	@Autowired
+	private AddressService addressService;
 	
 	@Override
 	public List<Client> findAll() {
-		return repository.findAll();
+		return clientRepository.findAll();
 	}
 	
 	@Override
 	public Client findById(Long id) {
-		Optional<Client> obj = repository.findById(id);
+		Optional<Client> obj = clientRepository.findById(id);
 		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
 	@Override
 	public Client insert(Client obj) {
 		obj.getAddress().setClient(obj);
-		return repository.save(obj);
+		return clientRepository.save(obj);
 	}
 	
 	@Override
 	public void delete(Long id) {
-		if (!repository.existsById(id)) {
+		if (!clientRepository.existsById(id)) {
 			throw new ResourceNotFoundException(id);		
 		}
-		repository.deleteById(id);
+		clientRepository.deleteById(id);
 	}
 	
 	@Override
-	public Client update(Client obj, Long id) {
+	public Client update(Client newDataObj, Long id) {
 		try {
-			Client entity = repository.getReferenceById(id);
-			updateData(entity, obj);
-			return repository.save(entity);			
+			Client entity = clientRepository.getReferenceById(id);
+			updateData(entity, newDataObj);
+			return clientRepository.save(entity);			
 		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException(id);
 		}
 	}
 	
 	@Override
-	public void updateData(Client entity, Client obj) {
-		entity.setName(obj.getName());
-		entity.setCpf(obj.getCpf());
-		entity.setMotherName(obj.getMotherName());
-		entity.setDateBirth(obj.getDateBirth());
-		entity.setGender(obj.getGender());
-		entity.setEmail(obj.getEmail());
-		entity.setPassword(obj.getPassword());
+	public void updateData(Client entity, Client newDataObj) {
+		entity.setName(newDataObj.getName());
+		entity.setCpf(newDataObj.getCpf());
+		entity.setMotherName(newDataObj.getMotherName());
+		entity.setDateBirth(newDataObj.getDateBirth());
+		entity.setGender(newDataObj.getGender());
+		entity.setEmail(newDataObj.getEmail());
+		entity.setPassword(newDataObj.getPassword());
 		
-		if (obj.getAddress() != null) {
-			entity.getAddress().setStreet(obj.getAddress().getStreet());
-			entity.getAddress().setNumber(obj.getAddress().getNumber());
-			entity.getAddress().setNeighborhood(obj.getAddress().getNeighborhood());
-			entity.getAddress().setCity(obj.getAddress().getCity());
-			entity.getAddress().setState(obj.getAddress().getState());
-			entity.getAddress().setPostalCode(obj.getAddress().getPostalCode());
+		if (newDataObj.getAddress() != null) {
+			addressService.update(entity.getAddress(), newDataObj.getAddress());
 		}
 	}
 

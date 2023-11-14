@@ -31,7 +31,7 @@ public class Account implements Serializable {
 	@OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
 	private Balance balance;
 	
-	@OneToMany(mappedBy = "account")
+	@OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
 	private Set<PixKey> pixKeys;
 	
 	public Account() {
