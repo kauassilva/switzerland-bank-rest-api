@@ -19,12 +19,12 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.switzerlandbank.api.entities.Address;
 import com.switzerlandbank.api.entities.Client;
 import com.switzerlandbank.api.entities.enums.Gender;
 import com.switzerlandbank.api.repositories.ClientRepository;
+import com.switzerlandbank.api.services.AddressService;
 import com.switzerlandbank.api.services.exceptions.ResourceNotFoundException;
 import com.switzerlandbank.api.services.impls.ClientServiceImpl;
 
@@ -33,11 +33,13 @@ import jakarta.persistence.EntityNotFoundException;
 class ClientServiceTest {
 
 	@Mock
-	private ClientRepository repository;
+	private ClientRepository clientRepository;
 	
-	@Autowired
+	@Mock
+	private AddressService addressService;
+	
 	@InjectMocks
-	private ClientServiceImpl service;
+	private ClientServiceImpl clientService;
 	
 	@BeforeEach
 	void setUp() {
@@ -61,17 +63,17 @@ class ClientServiceTest {
 		List<Client> expectedResult = new ArrayList<>();
 		expectedResult.addAll(Arrays.asList(client1, client2, client3));
 		
-		when(repository.findAll()).thenReturn(expectedResult);
+		when(clientRepository.findAll()).thenReturn(expectedResult);
 		
-		List<Client> result = service.findAll();
+		List<Client> result = clientService.findAll();
 		
 		assertEquals(expectedResult, result);
 	}
 	
 	@Test
 	void testFindAll_ReturnEmptyList() {
-		when(repository.findAll()).thenReturn(Collections.emptyList());
-		List<Client> result = service.findAll();
+		when(clientRepository.findAll()).thenReturn(Collections.emptyList());
+		List<Client> result = clientService.findAll();
 		assertTrue(result.isEmpty());
 	}
 	
@@ -81,8 +83,8 @@ class ClientServiceTest {
 		Address address = new Address(1L, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", expectedClient);
 		expectedClient.setAddress(address);
 		
-		when(repository.findById(1L)).thenReturn(Optional.of(expectedClient));
-		Client result = service.findById(1L);
+		when(clientRepository.findById(1L)).thenReturn(Optional.of(expectedClient));
+		Client result = clientService.findById(1L);
 		assertEquals(expectedClient, result);
 	}
 
@@ -92,9 +94,9 @@ class ClientServiceTest {
 		Address address = new Address(1L, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", client);
 		client.setAddress(address);
 		
-		when(repository.findById(1L)).thenReturn(Optional.of(client));
+		when(clientRepository.findById(1L)).thenReturn(Optional.of(client));
 		
-		assertThrows(ResourceNotFoundException.class, () -> service.findById(2L));
+		assertThrows(ResourceNotFoundException.class, () -> clientService.findById(2L));
 	}
 	
 	@Test
@@ -103,42 +105,60 @@ class ClientServiceTest {
 		Address address = new Address(1L, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", expectedClient);
 		expectedClient.setAddress(address);
 		
-		when(repository.save(expectedClient)).thenReturn(expectedClient);
+		when(clientRepository.save(expectedClient)).thenReturn(expectedClient);
 		
-		Client result = service.insert(expectedClient);
+		Client result = clientService.insert(expectedClient);
 		
 		assertEquals(expectedClient, result);
 	}
 	
 	@Test
 	void testDelete_Success() {
-		when(repository.existsById(1L)).thenReturn(true);
-		service.delete(1L);
-		verify(repository, times(1)).deleteById(1L);
+		when(clientRepository.existsById(1L)).thenReturn(true);
+		clientService.delete(1L);
+		verify(clientRepository, times(1)).deleteById(1L);
 	}
 	
 	@Test
 	void testDelete_ThrowsResourceNotFoundException() {
-		when(repository.existsById(1L)).thenReturn(true);
-		assertThrows(ResourceNotFoundException.class, () -> service.delete(2L));
+		when(clientRepository.existsById(1L)).thenReturn(true);
+		assertThrows(ResourceNotFoundException.class, () -> clientService.delete(2L));
 	}
 	
 	@Test
-	void testUpdate_Success() {
-		Client updatedClient = new Client(1L, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
-		Address address1 = new Address(1L, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", updatedClient);
-		updatedClient.setAddress(address1);
+	void testUpdate_VerifySaveWithExistingClient() {
+		Client existingClient = new Client(1L, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
+		Address address1 = new Address(1L, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", existingClient);
+		existingClient.setAddress(address1);
 		
-		Client currentClient = new Client(1L, "Carlos Pereira", "11122233344", "Teresa Pereira", LocalDate.parse("1975-10-10"), Gender.OTHER, "carlospereira@gmail.com", "CarlosPereira123");
-		Address address2 = new Address(1L, "R. Cento e Cinquenta e Dois", "196", "Laranjal", "Volta Redonda", "Rio de Janeiro", "27255020", currentClient);
-		currentClient.setAddress(address2);
+		Client newClient = new Client(1L, "Carlos Pereira", "11122233344", "Teresa Pereira", LocalDate.parse("1975-10-10"), Gender.OTHER, "carlospereira@gmail.com", "CarlosPereira123");
+		Address address2 = new Address(1L, "R. Cento e Cinquenta e Dois", "196", "Laranjal", "Volta Redonda", "Rio de Janeiro", "27255020", newClient);
+		newClient.setAddress(address2);
 		
-		when(repository.getReferenceById(1L)).thenReturn(currentClient);
-		when(repository.save(updatedClient)).thenReturn(updatedClient);
+		when(clientRepository.getReferenceById(1L)).thenReturn(existingClient);
+
+		clientService.update(newClient, 1L);
 		
-		Client result = service.update(updatedClient, 1L);
+		// Verifica se o método save do repository foi chamado com o Client existente
+		verify(clientRepository, times(1)).save(existingClient);
+	}
+	
+	@Test
+	void testUpdate_VerifyUpdateWithAddress() {
+		Client existingClient = new Client(1L, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
+		Address address1 = new Address(1L, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", existingClient);
+		existingClient.setAddress(address1);
 		
-		assertEquals(updatedClient, result);
+		Client newClient = new Client(1L, "Carlos Pereira", "11122233344", "Teresa Pereira", LocalDate.parse("1975-10-10"), Gender.OTHER, "carlospereira@gmail.com", "CarlosPereira123");
+		Address address2 = new Address(1L, "R. Cento e Cinquenta e Dois", "196", "Laranjal", "Volta Redonda", "Rio de Janeiro", "27255020", newClient);
+		newClient.setAddress(address2);
+		
+		when(clientRepository.getReferenceById(1L)).thenReturn(existingClient);
+
+		clientService.update(newClient, 1L);
+		
+		// Verifica se o método update do AddressService foi chamado com o Address do Client existente e o novo Address
+		verify(addressService, times(1)).update(existingClient.getAddress(), newClient.getAddress());
 	}
 	
 	@Test
@@ -147,9 +167,9 @@ class ClientServiceTest {
 		Address address1 = new Address(null, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", client);
 		client.setAddress(address1);
 		
-		when(repository.getReferenceById(2L)).thenThrow(EntityNotFoundException.class);
+		when(clientRepository.getReferenceById(2L)).thenThrow(EntityNotFoundException.class);
 		
-		assertThrows(ResourceNotFoundException.class, () -> service.update(client, 2L));
+		assertThrows(ResourceNotFoundException.class, () -> clientService.update(client, 2L));
 	}
 
 }
