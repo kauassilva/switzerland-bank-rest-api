@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.switzerlandbank.api.entities.Client;
 import com.switzerlandbank.api.repositories.ClientRepository;
+import com.switzerlandbank.api.services.AccountService;
 import com.switzerlandbank.api.services.AddressService;
 import com.switzerlandbank.api.services.ClientService;
 import com.switzerlandbank.api.services.exceptions.ResourceNotFoundException;
@@ -23,6 +24,9 @@ public class ClientServiceImpl implements ClientService {
 	@Autowired
 	private AddressService addressService;
 	
+	@Autowired
+	private AccountService accountService;
+	
 	@Override
 	public List<Client> findAll() {
 		return clientRepository.findAll();
@@ -37,7 +41,10 @@ public class ClientServiceImpl implements ClientService {
 	@Override
 	public Client insert(Client obj) {
 		obj.getAddress().setClient(obj);
-		return clientRepository.save(obj);
+		Client savedClient = clientRepository.save(obj);
+		
+		accountService.insert(savedClient);
+		return savedClient;
 	}
 	
 	@Override
