@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -26,6 +28,7 @@ import com.switzerlandbank.api.entities.enums.Gender;
 import com.switzerlandbank.api.entities.enums.KeyType;
 import com.switzerlandbank.api.repositories.AccountRepository;
 import com.switzerlandbank.api.repositories.PixKeyRepository;
+import com.switzerlandbank.api.services.PixKeyService;
 import com.switzerlandbank.api.services.exceptions.ResourceNotFoundException;
 import com.switzerlandbank.api.services.impls.PixKeyServiceImpl;
 
@@ -36,6 +39,9 @@ class PixKeyServiceTest {
 
 	@Mock
 	private AccountRepository accountRepository;
+
+	@Mock
+	private PixKeyService pixKeyService;
 
 	@InjectMocks
 	@Autowired
@@ -111,5 +117,34 @@ class PixKeyServiceTest {
 		PixKey result = service.insert(pixKey);
 		assertEquals(pixKey, result);
 	}
+
+	//@Test
+	//void PixKeyInsertButIsEmpty(){
+		
+	//	when(accountRepository.getReferenceById(1L)).thenReturn(account);
+	//	when(pixKeyRepository.save(pixKey)).thenReturn(pixKey);
+	//	PixKey result = service.insert(pixKey);
+
+	//	assertThrows(java.lang.NullPointerException.class,() -> service.insert(result));
+		
+		
+	//java.lang.NullPointerException
+	//}
+	
+	@Test
+	void PixKeyDelete(){
+
+		when(pixKeyRepository.existsById(1L)).thenReturn(true);
+		pixKeyService.delete(1L);
+		verify(pixKeyRepository, times(1)).deleteById(1L);
+	}
+
+	@Test
+	void PixKeyDeleteFail(){
+		when(pixKeyRepository.existsById(1L)).thenReturn(true);
+		assertThrows(ResourceNotFoundException.class, () -> pixKeyService.delete(2L));
+	}
+
+
 
 }
