@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.switzerlandbank.api.entities.Account;
-import com.switzerlandbank.api.services.impls.AccountServiceImpl;
+import com.switzerlandbank.api.services.AccountService;
 
 @RestController
 @RequestMapping(value = "/api/accounts")
 public class AccountResource {
 	
 	@Autowired
-	private AccountServiceImpl service;
+	private AccountService service;
 	
 	@GetMapping
 	public ResponseEntity<List<Account>> findAll() {

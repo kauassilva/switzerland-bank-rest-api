@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.switzerlandbank.api.entities.Address;
-import com.switzerlandbank.api.services.impls.AddressServiceImpl;
+import com.switzerlandbank.api.services.AddressService;
 
 @RestController
 @RequestMapping(value = "/api/addresses")
 public class AddressResource {
 	
 	@Autowired
-	private AddressServiceImpl service;
+	private AddressService service;
 	
 	@GetMapping
 	public ResponseEntity<List<Address>> findAll() {
