@@ -36,7 +36,7 @@ import com.switzerlandbank.api.services.impls.ClientServiceImpl;
 @WebMvcTest(controllers = ClientResource.class)
 @AutoConfigureJsonTesters
 @ExtendWith(MockitoExtension.class)
-class ClientResourceTest {
+class ClientResourceUnitTest {
 	
 	@Autowired
 	private MockMvc mockMvc;
