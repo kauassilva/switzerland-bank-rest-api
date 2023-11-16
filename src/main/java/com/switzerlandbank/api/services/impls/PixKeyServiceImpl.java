@@ -20,39 +20,39 @@ import com.switzerlandbank.api.services.exceptions.ResourceNotFoundException;
 public class PixKeyServiceImpl implements PixKeyService {
 	
 	@Autowired
-	private PixKeyRepository repository;
+	private PixKeyRepository pixKeyRepository;
 	
 	@Autowired
 	private AccountRepository accountRepository;
 
 	@Override
 	public List<PixKey> findAll() {
-		return repository.findAll();
+		return pixKeyRepository.findAll();
 	}
 
 	@Override
 	public List<PixKey> findByAccountId(Long accountId) {
-		return repository.findByAccountId(accountId);
+		return pixKeyRepository.findByAccountId(accountId);
 	}
 
 	@Override
 	public PixKey findById(Long id) {
-		Optional<PixKey> obj = repository.findById(id);
+		Optional<PixKey> obj = pixKeyRepository.findById(id);
 		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
 	@Override
 	public PixKey insert(PixKey obj) {
 		validateKeyType(obj);
-		return repository.save(obj);
+		return pixKeyRepository.save(obj);
 	}
 	
 	@Override
 	public void delete(Long id) {
-		if (!repository.existsById(id)) {
+		if (!pixKeyRepository.existsById(id)) {
 			throw new ResourceNotFoundException(id);
 		}
-		repository.deleteById(id);
+		pixKeyRepository.deleteById(id);
 	}
 	
 	private void validateKeyType(PixKey obj) {

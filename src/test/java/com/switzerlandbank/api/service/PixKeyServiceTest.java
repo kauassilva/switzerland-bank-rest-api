@@ -3,9 +3,9 @@ package com.switzerlandbank.api.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -28,7 +28,6 @@ import com.switzerlandbank.api.entities.enums.Gender;
 import com.switzerlandbank.api.entities.enums.KeyType;
 import com.switzerlandbank.api.repositories.AccountRepository;
 import com.switzerlandbank.api.repositories.PixKeyRepository;
-import com.switzerlandbank.api.services.PixKeyService;
 import com.switzerlandbank.api.services.exceptions.ResourceNotFoundException;
 import com.switzerlandbank.api.services.impls.PixKeyServiceImpl;
 
@@ -40,14 +39,11 @@ class PixKeyServiceTest {
 	@Mock
 	private AccountRepository accountRepository;
 
-	@Mock
-	private PixKeyService pixKeyService;
-
 	@InjectMocks
 	@Autowired
-	private PixKeyServiceImpl service;
+	private PixKeyServiceImpl pixKeyService;
 
-	private PixKey pixKey;
+	private PixKey pixKeyEmpty;
 	private Account account;
 
 	@BeforeEach
@@ -58,7 +54,7 @@ class PixKeyServiceTest {
         account = new Account(1L, "123456", client1);
 		client1.setAccount(account);
 
-		pixKey = new PixKey(1L, "1", KeyType.CPF, account);
+		pixKeyEmpty = new PixKey(1L, "1", KeyType.CPF, account);
 		MockitoAnnotations.openMocks(this);
 
 	}
@@ -66,70 +62,66 @@ class PixKeyServiceTest {
 	@Test
 	void findAllPixKey() {
 		List<PixKey> pixKeyList = new ArrayList<>();
-		pixKeyList.add(pixKey);
+		pixKeyList.add(pixKeyEmpty);
 
 		when(pixKeyRepository.findAll()).thenReturn(pixKeyList);
-		List<PixKey> result = service.findAll();
+		List<PixKey> result = pixKeyService.findAll();
 		assertEquals(pixKeyList, result);
 	}
 
 	@Test
 	void findAllPixKeyButPixKeyIsEmpty(){
 		when(pixKeyRepository.findAll()).thenReturn(Collections.emptyList());
-		List<PixKey> result = service.findAll();
+		List<PixKey> result = pixKeyService.findAll();
 		assertTrue(result.isEmpty());
 	}
 
 	@Test
 	void findPixKeyById(){
-		when(pixKeyRepository.findById(1L)).thenReturn(Optional.of(pixKey));
-		PixKey result = service.findById(1L);
-		assertEquals(pixKey, result);
+		when(pixKeyRepository.findById(1L)).thenReturn(Optional.of(pixKeyEmpty));
+		PixKey result = pixKeyService.findById(1L);
+		assertEquals(pixKeyEmpty, result);
 	}
 
 	@Test
 	void findPixKeyByIdButIsEmpty(){
-		when(pixKeyRepository.findById(1L)).thenReturn(Optional.of(pixKey));
-		assertThrows(ResourceNotFoundException.class,() -> service.findById(6L));
+		when(pixKeyRepository.findById(1L)).thenReturn(Optional.of(pixKeyEmpty));
+		assertThrows(ResourceNotFoundException.class,() -> pixKeyService.findById(6L));
 	}
 
 	@Test
 	void findByAccountId() {
 		List<PixKey> pixKeyList = new ArrayList<>();
-		pixKeyList.add(pixKey);
+		pixKeyList.add(pixKeyEmpty);
 
 		when(pixKeyRepository.findByAccountId(1L)).thenReturn(pixKeyList);
-		List<PixKey> result = service.findByAccountId(1L);
+		List<PixKey> result = pixKeyService.findByAccountId(1L);
 		assertEquals(pixKeyList, result);
 	}
 
 	@Test
 	void findByAccountIdButIsEmpty(){
 		when(pixKeyRepository.findByAccountId(1L)).thenReturn(Collections.emptyList());
-		List<PixKey> result = service.findByAccountId(1L);
+		List<PixKey> result = pixKeyService.findByAccountId(1L);
 		assertTrue(result.isEmpty());
 	}
 
 	@Test
 	void PixKeyInsert(){
 		when(accountRepository.getReferenceById(1L)).thenReturn(account);
-		when(pixKeyRepository.save(pixKey)).thenReturn(pixKey);
-		PixKey result = service.insert(pixKey);
-		assertEquals(pixKey, result);
+		when(pixKeyRepository.save(pixKeyEmpty)).thenReturn(pixKeyEmpty);
+		PixKey result = pixKeyService.insert(pixKeyEmpty);
+		assertEquals(pixKeyEmpty, result);
 	}
 
-	//@Test
-	//void PixKeyInsertButIsEmpty(){
-		
-	//	when(accountRepository.getReferenceById(1L)).thenReturn(account);
-	//	when(pixKeyRepository.save(pixKey)).thenReturn(pixKey);
-	//	PixKey result = service.insert(pixKey);
+	@Test
+	void PixKeyInsertButIsEmpty(){
+		PixKey pixKeyEmpty = new PixKey(1L, null, KeyType.CPF, null);
+		when(pixKeyRepository.save(pixKeyEmpty)).thenReturn(pixKeyEmpty);
 
-	//	assertThrows(java.lang.NullPointerException.class,() -> service.insert(result));
-		
-		
-	//java.lang.NullPointerException
-	//}
+		assertThrows(NullPointerException.class,() -> pixKeyService.insert(pixKeyEmpty));
+
+	}
 	
 	@Test
 	void PixKeyDelete(){
@@ -144,7 +136,5 @@ class PixKeyServiceTest {
 		when(pixKeyRepository.existsById(1L)).thenReturn(true);
 		assertThrows(ResourceNotFoundException.class, () -> pixKeyService.delete(2L));
 	}
-
-
 
 }
