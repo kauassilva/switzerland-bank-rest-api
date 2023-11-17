@@ -9,6 +9,6 @@ public interface BalanceService {
 
 	List<Balance> findAll();
 	Balance findById(Long id);
-	void insert(Account savedAccount);
+	Balance insert(Account savedAccount);
 	
 }

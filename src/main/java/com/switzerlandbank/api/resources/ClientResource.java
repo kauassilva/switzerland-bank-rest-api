@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.switzerlandbank.api.entities.Client;
-import com.switzerlandbank.api.services.impls.ClientServiceImpl;
+import com.switzerlandbank.api.services.ClientService;
 
 import jakarta.validation.Valid;
 
@@ -25,7 +25,7 @@ import jakarta.validation.Valid;
 public class ClientResource {
 	
 	@Autowired
-	private ClientServiceImpl service;
+	private ClientService service;
 	
 	@GetMapping
 	public ResponseEntity<List<Client>> findAll() {

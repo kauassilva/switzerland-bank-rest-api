@@ -32,9 +32,9 @@ public class BalanceServiceImpl implements BalanceService {
 	}
 
 	@Override
-	public void insert(Account savedAccount) {
+	public Balance insert(Account savedAccount) {
 		Balance balance = new Balance(null, new BigDecimal(10), Instant.now(), savedAccount);
-		repository.save(balance);
+		return repository.save(balance);
 	}
 	
 }
