@@ -58,9 +58,9 @@ public class PixKeyServiceImpl implements PixKeyService {
 	private void validateKeyType(PixKey obj) {
 		Account account = accountRepository.getReferenceById(obj.getAccount().getId());
 		if (obj.getKeyType() == KeyType.valueOf(1)) {
-			obj.setKeyValue(account.getClient().getCpf());
+			obj.setKeyValue(account.getCostumer().getCpf());
 		} else if (obj.getKeyType() == KeyType.valueOf(2)) {
-			obj.setKeyValue(account.getClient().getEmail());
+			obj.setKeyValue(account.getCostumer().getEmail());
 		} else if (obj.getKeyType() == KeyType.valueOf(3)) {
 			obj.setKeyValue(generateRandomKey());
 		}

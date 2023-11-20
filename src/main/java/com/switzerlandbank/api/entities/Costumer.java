@@ -17,8 +17,8 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "tb_client")
-public class Client implements Serializable {
+@Table(name = "tb_costumer")
+public class Costumer implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -41,17 +41,17 @@ public class Client implements Serializable {
 	private String password;
 	
 	@NotNull(message = "address fields cannot be null")
-	@OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "costumer", cascade = CascadeType.ALL)
 	private Address address;
 	
 	@JsonIgnore
-	@OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "costumer", cascade = CascadeType.ALL)
 	private Account account;
 	
-	public Client() {
+	public Costumer() {
 	}
 
-	public Client(Long id, String name, String cpf, String motherName, LocalDate dateBirth, Gender gender,
+	public Costumer(Long id, String name, String cpf, String motherName, LocalDate dateBirth, Gender gender,
 			String email, String password) {
 		this.id = id;
 		this.name = name;
@@ -156,7 +156,7 @@ public class Client implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Client other = (Client) obj;
+		Costumer other = (Costumer) obj;
 		return Objects.equals(id, other.id);
 	}
 

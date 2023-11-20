@@ -24,7 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.switzerlandbank.api.entities.Account;
 import com.switzerlandbank.api.entities.Address;
 import com.switzerlandbank.api.entities.Balance;
-import com.switzerlandbank.api.entities.Client;
+import com.switzerlandbank.api.entities.Costumer;
 import com.switzerlandbank.api.entities.enums.Gender;
 import com.switzerlandbank.api.repositories.AccountRepository;
 import com.switzerlandbank.api.repositories.BalanceRepository;
@@ -49,7 +49,7 @@ class BalanceServiceTest {
 
     @BeforeEach
     void setUp() {
-        Client client1 = new Client(null, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
+        Costumer client1 = new Costumer(null, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
         Address address1 = new Address(null, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", client1);
         client1.setAddress(address1);
         account = new Account(1L, "123456", client1);

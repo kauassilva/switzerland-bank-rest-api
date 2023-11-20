@@ -22,7 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.switzerlandbank.api.entities.Account;
 import com.switzerlandbank.api.entities.Address;
-import com.switzerlandbank.api.entities.Client;
+import com.switzerlandbank.api.entities.Costumer;
 import com.switzerlandbank.api.entities.PixKey;
 import com.switzerlandbank.api.entities.enums.Gender;
 import com.switzerlandbank.api.entities.enums.KeyType;
@@ -48,11 +48,11 @@ class PixKeyServiceTest {
 
 	@BeforeEach
 	void setUp() {
-		Client client1 = new Client(null, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
-        Address address1 = new Address(null, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", client1);
-        client1.setAddress(address1);
-        account = new Account(1L, "123456", client1);
-		client1.setAccount(account);
+		Costumer costumer1 = new Costumer(null, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
+        Address address1 = new Address(null, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", costumer1);
+        costumer1.setAddress(address1);
+        account = new Account(1L, "123456", costumer1);
+		costumer1.setAccount(account);
 
 		pixKeyEmpty = new PixKey(1L, "1", KeyType.CPF, account);
 		MockitoAnnotations.openMocks(this);

@@ -39,12 +39,12 @@ public class Address implements Serializable {
 	@JsonIgnore
  	@OneToOne
  	@MapsId
-	private Client client;
+	private Costumer costumer;
 	
 	public Address() {
 	}
 
-	public Address(Long id, String street, String number, String neighborhood, String city, String state, String postalCode, Client client) {
+	public Address(Long id, String street, String number, String neighborhood, String city, String state, String postalCode, Costumer costumer) {
 		this.id = id;
 		this.street = street;
 		this.number = number;
@@ -52,7 +52,7 @@ public class Address implements Serializable {
 		this.city = city;
 		this.state = state;
 		this.postalCode = postalCode;
-		this.client = client;
+		this.costumer = costumer;
 	}
 
 	public Long getId() {
@@ -111,12 +111,12 @@ public class Address implements Serializable {
 		this.postalCode = postalCode;
 	}
 
-	public Client getClient() {
-		return client;
+	public Costumer getCostumer() {
+		return costumer;
 	}
 
-	public void setClient(Client client) {
-		this.client = client;
+	public void setCostumer(Costumer costumer) {
+		this.costumer = costumer;
 	}
 
 	@Override

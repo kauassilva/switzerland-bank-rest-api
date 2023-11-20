@@ -15,32 +15,32 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.switzerlandbank.api.entities.Client;
-import com.switzerlandbank.api.services.ClientService;
+import com.switzerlandbank.api.entities.Costumer;
+import com.switzerlandbank.api.services.CostumerService;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping(value = "/api/clients")
-public class ClientResource {
+@RequestMapping(value = "/api/costumers")
+public class CostumerResource {
 	
 	@Autowired
-	private ClientService service;
+	private CostumerService service;
 	
 	@GetMapping
-	public ResponseEntity<List<Client>> findAll() {
-		List<Client> list = service.findAll();
+	public ResponseEntity<List<Costumer>> findAll() {
+		List<Costumer> list = service.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Client> findById(@PathVariable Long id) {
-		Client obj = service.findById(id);
+	public ResponseEntity<Costumer> findById(@PathVariable Long id) {
+		Costumer obj = service.findById(id);
 		return ResponseEntity.ok().body(obj);
 	}
 	
 	@PostMapping
-	public ResponseEntity<Client> insert(@RequestBody @Valid Client obj) {
+	public ResponseEntity<Costumer> insert(@RequestBody @Valid Costumer obj) {
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).body(obj);
@@ -53,7 +53,7 @@ public class ClientResource {
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Client> update(@RequestBody Client obj, @PathVariable Long id) {
+	public ResponseEntity<Costumer> update(@RequestBody Costumer obj, @PathVariable Long id) {
 		obj = service.update(obj, id);
 		return ResponseEntity.ok().body(obj);
 	}
