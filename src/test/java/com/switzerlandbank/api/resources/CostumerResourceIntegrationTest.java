@@ -74,10 +74,10 @@ class costumerResourceIntegrationTest {
 	
 	@Test
 	void testFindByID_ReturnsStatusOk() {
-		Costumer newcostumer = repository.save(costumer);
+		Costumer newCostumer = repository.save(costumer);
 		
 		ResponseEntity<Costumer> response = testRestTemplate
-				.exchange("/api/costumers/" + newcostumer.getId(), HttpMethod.GET, null, Costumer.class);
+				.exchange("/api/costumers/" + newCostumer.getId(), HttpMethod.GET, null, Costumer.class);
 		
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 	}
@@ -92,12 +92,12 @@ class costumerResourceIntegrationTest {
 	
 	@Test
 	void testFindById_ReturnsCorrectContent() {
-		Costumer newcostumer = repository.save(costumer);
+		Costumer newCostumer = repository.save(costumer);
 		
 		ResponseEntity<Costumer> response = testRestTemplate
-				.exchange("/api/costumers/" + newcostumer.getId(), HttpMethod.GET, null, Costumer.class);
+				.exchange("/api/costumers/" + newCostumer.getId(), HttpMethod.GET, null, Costumer.class);
 		
-		assertEquals(newcostumer, response.getBody());
+		assertEquals(newCostumer, response.getBody());
 	}
 	
 	@Test
@@ -112,9 +112,9 @@ class costumerResourceIntegrationTest {
 	
 	@Test
 	void testInsert_ReturnsStatusBadRequest() {
-		Costumer wrongcostumer = new Costumer(null, null, null, null, null, Gender.OTHER, null, null);
+		Costumer wrongCostumer = new Costumer(null, null, null, null, null, Gender.OTHER, null, null);
 		
-		HttpEntity<Costumer> httpEntity = new HttpEntity<>(wrongcostumer);
+		HttpEntity<Costumer> httpEntity = new HttpEntity<>(wrongCostumer);
 		
 		ResponseEntity<Costumer> response = testRestTemplate
 				.exchange("/api/costumers", HttpMethod.POST, httpEntity, Costumer.class);
@@ -124,10 +124,10 @@ class costumerResourceIntegrationTest {
 	
 	@Test
 	void testDelete_ReturnsStatusNoContent() {
-		Costumer savedcostumer = repository.save(costumer);
+		Costumer savedCostumer = repository.save(costumer);
 		
 		ResponseEntity<Void> response = testRestTemplate
-				.exchange("/api/costumers/" + savedcostumer.getId(), HttpMethod.DELETE, null, Void.class);
+				.exchange("/api/costumers/" + savedCostumer.getId(), HttpMethod.DELETE, null, Void.class);
 		
 		assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
 	}
@@ -162,11 +162,11 @@ class costumerResourceIntegrationTest {
 	void testUpdate_ReturnsStatusNotFound() {
 		Long id = -1L;
 		
-		Costumer updatedcostumer = new Costumer(null, "Carlos Pereira", "11122233344", "Teresa Pereira", LocalDate.parse("1975-10-10"), Gender.OTHER, "carlospereira@gmail.com", "CarlosPereira123");
+		Costumer updatedCostumer = new Costumer(null, "Carlos Pereira", "11122233344", "Teresa Pereira", LocalDate.parse("1975-10-10"), Gender.OTHER, "carlospereira@gmail.com", "CarlosPereira123");
 		Address updatedAddress = new Address(null, "R. Cento e Cinquenta e Dois", "196", "Laranjal", "Volta Redonda", "Rio de Janeiro", "27255020", costumer);
-		updatedcostumer.setAddress(updatedAddress);
+		updatedCostumer.setAddress(updatedAddress);
 		
-		HttpEntity<Costumer> httpEntity = new HttpEntity<>(updatedcostumer);
+		HttpEntity<Costumer> httpEntity = new HttpEntity<>(updatedCostumer);
 		
 		ResponseEntity<Costumer> response = testRestTemplate
 				.exchange("/api/costumers/" + id, HttpMethod.PUT, httpEntity, Costumer.class);
@@ -178,11 +178,11 @@ class costumerResourceIntegrationTest {
 	void testUpdate_ReturnsCorrectContent() {
 		Costumer costumer = repository.save(this.costumer);
 		
-		Costumer updatedcostumer = new Costumer(4L, "Carlos Pereira", "11122233344", "Teresa Pereira", LocalDate.parse("1975-10-10"), Gender.OTHER, "carlospereira@gmail.com", "CarlosPereira123");
+		Costumer updatedCostumer = new Costumer(4L, "Carlos Pereira", "11122233344", "Teresa Pereira", LocalDate.parse("1975-10-10"), Gender.OTHER, "carlospereira@gmail.com", "CarlosPereira123");
 		Address updatedAddress = new Address(4L, "R. Cento e Cinquenta e Dois", "196", "Laranjal", "Volta Redonda", "Rio de Janeiro", "27255020", costumer);
-		updatedcostumer.setAddress(updatedAddress);
+		updatedCostumer.setAddress(updatedAddress);
 		
-		HttpEntity<Costumer> httpEntity = new HttpEntity<>(updatedcostumer);
+		HttpEntity<Costumer> httpEntity = new HttpEntity<>(updatedCostumer);
 		
 		ResponseEntity<Costumer> response = testRestTemplate
 				.exchange("/api/costumers/" + costumer.getId(), HttpMethod.PUT, httpEntity, Costumer.class);
