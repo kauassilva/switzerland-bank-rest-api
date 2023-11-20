@@ -25,6 +25,8 @@ import com.switzerlandbank.api.repositories.PixKeyRepository;
 @Profile("test")
 public class TestConfig implements CommandLineRunner {
 
+
+
 	@Autowired
 	private ClientRepository clientRepository;
 	
