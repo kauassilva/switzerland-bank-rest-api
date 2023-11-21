@@ -26,7 +26,7 @@ import com.switzerlandbank.api.repositories.CostumerRepository;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-class costumerResourceIntegrationTest {
+class CostumerResourceIntegrationTest {
 
 	@Autowired
 	private TestRestTemplate testRestTemplate;

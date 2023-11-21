@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.assertj.core.util.Lists;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -36,7 +37,7 @@ import com.switzerlandbank.api.services.impls.CostumerServiceImpl;
 @WebMvcTest(controllers = CostumerResource.class)
 @AutoConfigureJsonTesters
 @ExtendWith(MockitoExtension.class)
-class costumerResourceUnitTest {
+class CostumerResourceUnitTest {
 	
 	@Autowired
 	private MockMvc mockMvc;
@@ -49,13 +50,18 @@ class costumerResourceUnitTest {
 	
 	@Autowired
 	private JacksonTester<List<Costumer>> jsonCostumerList;
+	
+	private Costumer costumer;
+	
+	@BeforeEach
+	void setUp() {
+		costumer = new Costumer(1L, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
+		Address address = new Address(1L, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", costumer);
+		costumer.setAddress(address);
+	}
 
 	@Test
 	void testFindAll_ReturnsStatusOk() throws Exception {
-		Costumer costumer = new Costumer(1L, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
-		Address address = new Address(1L, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", costumer);
-		costumer.setAddress(address);
-		
 		when(service.findAll()).thenReturn(Lists.newArrayList(costumer));
 		
 		MockHttpServletResponse response = mockMvc.perform(get("/api/costumers")
@@ -67,10 +73,6 @@ class costumerResourceUnitTest {
 	
 	@Test
 	void testFindAll_ReturnsContentSuccessfully() throws Exception {
-		Costumer costumer = new Costumer(1L, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
-		Address address = new Address(1L, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", costumer);
-		costumer.setAddress(address);
-		
 		when(service.findAll()).thenReturn(Lists.newArrayList(costumer));
 		
 		MockHttpServletResponse response = mockMvc.perform(get("/api/costumers")
@@ -95,10 +97,6 @@ class costumerResourceUnitTest {
 	
 	@Test
 	void testFindByID_ReturnsStatusOk() throws Exception {
-		Costumer costumer = new Costumer(1L, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
-		Address address = new Address(1L, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", costumer);
-		costumer.setAddress(address);
-		
 		when(service.findById(1L)).thenReturn(costumer);
 		
 		MockHttpServletResponse response = mockMvc.perform(get("/api/costumers/1")
@@ -121,10 +119,6 @@ class costumerResourceUnitTest {
 	
 	@Test
 	void testFindById_ReturnsCorrectContent() throws Exception {
-		Costumer costumer = new Costumer(1L, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
-		Address address = new Address(1L, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", costumer);
-		costumer.setAddress(address);
-		
 		when(service.findById(1L)).thenReturn(costumer);
 		
 		MockHttpServletResponse response = mockMvc.perform(get("/api/costumers/1")
@@ -137,10 +131,6 @@ class costumerResourceUnitTest {
 	
 	@Test
 	void testInsert_ReturnsStatusCreated() throws Exception {
-		Costumer costumer = new Costumer(1L, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
-		Address address = new Address(1L, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", costumer);
-		costumer.setAddress(address);
-		
 		when(service.insert(costumer)).thenReturn(costumer);
 		
 		MockHttpServletResponse response = mockMvc.perform(post("/api/costumers")
@@ -153,15 +143,15 @@ class costumerResourceUnitTest {
 	
 	@Test
 	void testInsert_ReturnsStatusBadRequest() throws Exception {
-		Costumer costumer = new Costumer(1L, null, "12345678910", null, LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com",null);
-		Address address = new Address(1L, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", costumer);
-		costumer.setAddress(address);
+		Costumer wrongCostumer = new Costumer(1L, null, "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
+		Address address = new Address(1L, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", wrongCostumer);
+		wrongCostumer.setAddress(address);
 		
-		when(service.insert(costumer)).thenReturn(costumer);
+		when(service.insert(wrongCostumer)).thenReturn(wrongCostumer);
 		
 		MockHttpServletResponse response = mockMvc.perform(post("/api/costumers")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(jsonCostumer.write(costumer).getJson()))
+				.content(jsonCostumer.write(wrongCostumer).getJson()))
 				.andReturn().getResponse();
 		response.setCharacterEncoding("UTF-8");
 		
@@ -170,10 +160,6 @@ class costumerResourceUnitTest {
 	
 	@Test
 	void testInsert_ReturnsCorrectContent() throws Exception {
-		Costumer costumer = new Costumer(1L, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
-		Address address = new Address(1L, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", costumer);
-		costumer.setAddress(address);
-		
 		when(service.insert(costumer)).thenReturn(costumer);
 		
 		MockHttpServletResponse response = mockMvc.perform(post("/api/costumers")
@@ -207,10 +193,6 @@ class costumerResourceUnitTest {
 	
 	@Test
 	void testUpdate_ReturnsStatusOk() throws Exception {
-		Costumer costumer = new Costumer(1L, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
-		Address address = new Address(1L, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", costumer);
-		costumer.setAddress(address);
-		
 		when(service.update(costumer, 1L)).thenReturn(costumer);
 		
 		MockHttpServletResponse response = mockMvc.perform(put("/api/costumers/1")
@@ -223,10 +205,6 @@ class costumerResourceUnitTest {
 	
 	@Test
 	void testUpdate_ReturnsStatusNotFound() throws Exception {
-		Costumer costumer = new Costumer(1L, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
-		Address address = new Address(1L, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", costumer);
-		costumer.setAddress(address);
-		
 		doThrow(new ResourceNotFoundException(2L)).when(service).update(costumer, 2L);
 		
 		MockHttpServletResponse response = mockMvc.perform(put("/api/costumers/2")
@@ -239,10 +217,6 @@ class costumerResourceUnitTest {
 	
 	@Test
 	void testUpdate_ReturnsCorrectContent() throws Exception {
-		Costumer costumer = new Costumer(1L, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
-		Address address = new Address(1L, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", costumer);
-		costumer.setAddress(address);
-		
 		when(service.update(costumer, 1L)).thenReturn(costumer);
 		
 		MockHttpServletResponse response = mockMvc.perform(put("/api/costumers/1")
