@@ -29,11 +29,6 @@ public class AddressServiceImpl implements AddressService {
 	}
 
 	@Override
-	public Address insert(Address address) {
-		return repository.save(address);
-	}
-
-	@Override
 	public Address update(Address entity, Address newDataObj) {
 		entity.setStreet(newDataObj.getStreet());
 		entity.setNumber(newDataObj.getNumber());

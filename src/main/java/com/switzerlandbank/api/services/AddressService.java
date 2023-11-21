@@ -8,7 +8,6 @@ public interface AddressService {
 	
 	List<Address> findAll();
 	Address findById(Long id);
-	Address insert(Address address);
 	Address update(Address entity, Address newDataObj);
 
 }
