@@ -1,12 +1,16 @@
 package com.switzerlandbank.api.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Answers.valueOf;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,6 +21,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -28,6 +33,7 @@ import com.switzerlandbank.api.entities.enums.Gender;
 import com.switzerlandbank.api.entities.enums.KeyType;
 import com.switzerlandbank.api.repositories.AccountRepository;
 import com.switzerlandbank.api.repositories.PixKeyRepository;
+import com.switzerlandbank.api.services.PixKeyService;
 import com.switzerlandbank.api.services.exceptions.ResourceNotFoundException;
 import com.switzerlandbank.api.services.impls.PixKeyServiceImpl;
 
@@ -44,6 +50,9 @@ class PixKeyServiceTest {
 	private PixKeyServiceImpl pixKeyService;
 
 	private PixKey pixKeyEmpty;
+	private PixKey pixKeyCPF;
+	private PixKey pixKeyEmail;
+	private PixKey pixKeyRandom;
 	private Account account;
 
 	@BeforeEach
@@ -55,6 +64,9 @@ class PixKeyServiceTest {
 		costumer1.setAccount(account);
 
 		pixKeyEmpty = new PixKey(1L, "1", KeyType.CPF, account);
+		pixKeyCPF = new PixKey(1L, null, KeyType.CPF, account);
+		pixKeyEmail = new PixKey(1L, null, KeyType.EMAIL, account);
+		pixKeyRandom = new PixKey(1L, null, KeyType.RANDOM, account);
 		MockitoAnnotations.openMocks(this);
 
 	}
@@ -137,6 +149,44 @@ class PixKeyServiceTest {
 		assertThrows(ResourceNotFoundException.class, () -> pixKeyService.delete(2L));
 	}
 
+	@Test
+	void PixKeyCpfValidate(){
+		when(accountRepository.getReferenceById(1L)).thenReturn(account);
+		pixKeyService.validateKeyType(pixKeyCPF);
+		assertEquals(account.getCostumer().getCpf(), pixKeyCPF.getKeyValue());
+	}
+
+	@Test
+	void PixKeyEmailValidate(){
+		when(accountRepository.getReferenceById(1L)).thenReturn(account);
+		pixKeyService.validateKeyType(pixKeyEmail);
+		assertEquals(account.getCostumer().getEmail(), pixKeyEmail.getKeyValue());
+	}
+	
+	//LEMBRAR DE PERGUNTAR PRO PROFESSOR
+	//@Test
+	//void PixKeyRandomValidate(){
+		//when(accountRepository.getReferenceById(1L)).thenReturn(account);
+		//pixKeyService.validateKeyType(pixKeyRandom);
+		//verify(pixKeyService, times(1)).generateRandomKey();
+		
+	
+	//}
+
+	@Test
+	void PixKeyRandomValidateTeste(){
+		String randomKey = pixKeyService.generateRandomKey();
+		assertNotNull(randomKey);
+	}
+
+	@Test
+	void pixKeyGenerateRandomKey(){
+		String randomKey = pixKeyService.generateRandomKey();
+		assertNotNull(randomKey);
+	}
+
 	
 
-}
+	}	
+
+

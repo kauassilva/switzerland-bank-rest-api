@@ -55,7 +55,7 @@ public class PixKeyServiceImpl implements PixKeyService {
 		pixKeyRepository.deleteById(id);
 	}
 	
-	private void validateKeyType(PixKey obj) {
+	public void validateKeyType(PixKey obj) {
 		Account account = accountRepository.getReferenceById(obj.getAccount().getId());
 		if (obj.getKeyType() == KeyType.valueOf(1)) {
 			obj.setKeyValue(account.getCostumer().getCpf());
@@ -66,7 +66,7 @@ public class PixKeyServiceImpl implements PixKeyService {
 		}
 	}
 	
-	private String generateRandomKey() {
+	public String generateRandomKey() {
 		SecureRandom random = new SecureRandom();
 		return new BigInteger(130, random).toString(32);
 	}
