@@ -1,6 +1,7 @@
-package com.switzerlandbank.api.resources;
+package com.switzerlandbank.api.resources.units;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
@@ -31,6 +32,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.switzerlandbank.api.entities.Address;
 import com.switzerlandbank.api.entities.Costumer;
 import com.switzerlandbank.api.entities.enums.Gender;
+import com.switzerlandbank.api.resources.CostumerResource;
 import com.switzerlandbank.api.services.exceptions.ResourceNotFoundException;
 import com.switzerlandbank.api.services.impls.CostumerServiceImpl;
 
@@ -227,5 +229,5 @@ class CostumerResourceUnitTest {
 		
 		assertThat(response.getContentAsString()).isEqualTo(jsonCostumer.write(costumer).getJson());
 	}
-	
+
 }

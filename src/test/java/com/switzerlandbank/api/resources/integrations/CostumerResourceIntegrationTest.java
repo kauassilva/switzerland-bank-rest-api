@@ -1,4 +1,4 @@
-package com.switzerlandbank.api.resources;
+package com.switzerlandbank.api.resources.integrations;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

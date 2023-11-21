@@ -1,4 +1,4 @@
-package com.switzerlandbank.api.resources;
+package com.switzerlandbank.api.resources.units;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -26,6 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.switzerlandbank.api.entities.Address;
 import com.switzerlandbank.api.entities.Costumer;
 import com.switzerlandbank.api.entities.enums.Gender;
+import com.switzerlandbank.api.resources.AddressResource;
 import com.switzerlandbank.api.services.exceptions.ResourceNotFoundException;
 import com.switzerlandbank.api.services.impls.AddressServiceImpl;
 
