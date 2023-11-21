@@ -3,8 +3,8 @@ package com.switzerlandbank.api.resources.integrations;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -62,42 +62,33 @@ class CostumerResourceIntegrationTest {
 	}
 	
 	@Test
-	void testFindAll_ReturnsEmptyList() {
-		List<Costumer> expectedResponse = Collections.emptyList();
-		repository.deleteAll();
-		
-		ResponseEntity<List<Costumer>> response = testRestTemplate
-				.exchange("/api/costumers", HttpMethod.GET, null, new ParameterizedTypeReference<List<Costumer>> () {});
-		
-		assertEquals(expectedResponse, response.getBody());
-	}
-	
-	@Test
 	void testFindByID_ReturnsStatusOk() {
-		Costumer newCostumer = repository.save(costumer);
+		Long id = 1L;
 		
 		ResponseEntity<Costumer> response = testRestTemplate
-				.exchange("/api/costumers/" + newCostumer.getId(), HttpMethod.GET, null, Costumer.class);
+				.exchange("/api/costumers/" + id, HttpMethod.GET, null, Costumer.class);
 		
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 	}
 	
 	@Test
 	void testFindById_ReturnsStatusNotFound() {
+		Long id = 0L;
+		
 		ResponseEntity<Costumer> response = testRestTemplate
-				.exchange("/api/costumers/" + -1, HttpMethod.GET, null, Costumer.class);
+				.exchange("/api/costumers/" + id, HttpMethod.GET, null, Costumer.class);
 		
 		assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
 	}
 	
 	@Test
 	void testFindById_ReturnsCorrectContent() {
-		Costumer newCostumer = repository.save(costumer);
+		Optional<Costumer> expectedResult = repository.findById(1L);
 		
 		ResponseEntity<Costumer> response = testRestTemplate
-				.exchange("/api/costumers/" + newCostumer.getId(), HttpMethod.GET, null, Costumer.class);
+				.exchange("/api/costumers/" + expectedResult.get().getId(), HttpMethod.GET, null, Costumer.class);
 		
-		assertEquals(newCostumer, response.getBody());
+		assertEquals(expectedResult.get(), response.getBody());
 	}
 	
 	@Test

@@ -6,7 +6,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import org.hibernate.Hibernate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -24,7 +23,6 @@ import com.switzerlandbank.api.entities.Address;
 import com.switzerlandbank.api.entities.Costumer;
 import com.switzerlandbank.api.entities.enums.Gender;
 import com.switzerlandbank.api.repositories.AccountRepository;
-import com.switzerlandbank.api.repositories.CostumerRepository;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -32,9 +30,6 @@ class AccountResourceIntegrationTest {
 	
 	@Autowired
 	private TestRestTemplate testRestTemplate;
-	
-	@Autowired
-	private CostumerRepository costumerRepository;
 
 	@Autowired
 	private AccountRepository accountRepository;
