@@ -45,10 +45,10 @@ class costumerResourceUnitTest {
 	private CostumerServiceImpl service;
 	
 	@Autowired
-	private JacksonTester<Costumer> jsoncostumer;
+	private JacksonTester<Costumer> jsonCostumer;
 	
 	@Autowired
-	private JacksonTester<List<Costumer>> jsoncostumerList;
+	private JacksonTester<List<Costumer>> jsonCostumerList;
 
 	@Test
 	void testFindAll_ReturnsStatusOk() throws Exception {
@@ -78,7 +78,7 @@ class costumerResourceUnitTest {
 				.andReturn().getResponse();
 		response.setCharacterEncoding("UTF-8");
 		
-		assertThat(response.getContentAsString()).isEqualTo(jsoncostumerList.write(Lists.newArrayList(costumer)).getJson());
+		assertThat(response.getContentAsString()).isEqualTo(jsonCostumerList.write(Lists.newArrayList(costumer)).getJson());
 	}
 	
 	@Test
@@ -90,7 +90,7 @@ class costumerResourceUnitTest {
 				.andReturn().getResponse();
 		response.setCharacterEncoding("UTF-8");
 		
-		assertThat(response.getContentAsString()).isEqualTo(jsoncostumerList.write(Collections.emptyList()).getJson());
+		assertThat(response.getContentAsString()).isEqualTo(jsonCostumerList.write(Collections.emptyList()).getJson());
 	}
 	
 	@Test
@@ -132,7 +132,7 @@ class costumerResourceUnitTest {
 				.andReturn().getResponse();
 		response.setCharacterEncoding("UTF-8");
 		
-		assertThat(response.getContentAsString()).isEqualTo(jsoncostumer.write(costumer).getJson());
+		assertThat(response.getContentAsString()).isEqualTo(jsonCostumer.write(costumer).getJson());
 	}
 	
 	@Test
@@ -145,7 +145,7 @@ class costumerResourceUnitTest {
 		
 		MockHttpServletResponse response = mockMvc.perform(post("/api/costumers")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(jsoncostumer.write(costumer).getJson()))
+				.content(jsonCostumer.write(costumer).getJson()))
 				.andReturn().getResponse();
 		
 		assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
@@ -161,7 +161,7 @@ class costumerResourceUnitTest {
 		
 		MockHttpServletResponse response = mockMvc.perform(post("/api/costumers")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(jsoncostumer.write(costumer).getJson()))
+				.content(jsonCostumer.write(costumer).getJson()))
 				.andReturn().getResponse();
 		response.setCharacterEncoding("UTF-8");
 		
@@ -178,11 +178,11 @@ class costumerResourceUnitTest {
 		
 		MockHttpServletResponse response = mockMvc.perform(post("/api/costumers")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(jsoncostumer.write(costumer).getJson()))
+				.content(jsonCostumer.write(costumer).getJson()))
 				.andReturn().getResponse();
 		response.setCharacterEncoding("UTF-8");
 		
-		assertThat(response.getContentAsString()).isEqualTo(jsoncostumer.write(costumer).getJson());
+		assertThat(response.getContentAsString()).isEqualTo(jsonCostumer.write(costumer).getJson());
 	}
 	
 	@Test
@@ -215,7 +215,7 @@ class costumerResourceUnitTest {
 		
 		MockHttpServletResponse response = mockMvc.perform(put("/api/costumers/1")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(jsoncostumer.write(costumer).getJson()))
+				.content(jsonCostumer.write(costumer).getJson()))
 				.andReturn().getResponse();
 		
 		assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
@@ -231,7 +231,7 @@ class costumerResourceUnitTest {
 		
 		MockHttpServletResponse response = mockMvc.perform(put("/api/costumers/2")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(jsoncostumer.write(costumer).getJson()))
+				.content(jsonCostumer.write(costumer).getJson()))
 				.andReturn().getResponse();
 		
 		assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
@@ -247,11 +247,11 @@ class costumerResourceUnitTest {
 		
 		MockHttpServletResponse response = mockMvc.perform(put("/api/costumers/1")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(jsoncostumer.write(costumer).getJson()))
+				.content(jsonCostumer.write(costumer).getJson()))
 				.andReturn().getResponse();
 		response.setCharacterEncoding("UTF-8");
 		
-		assertThat(response.getContentAsString()).isEqualTo(jsoncostumer.write(costumer).getJson());
+		assertThat(response.getContentAsString()).isEqualTo(jsonCostumer.write(costumer).getJson());
 	}
 	
 }
