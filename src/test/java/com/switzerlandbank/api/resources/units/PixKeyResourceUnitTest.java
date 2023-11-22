@@ -22,6 +22,17 @@ import com.switzerlandbank.api.services.impls.PixKeyServiceImpl;
 
 public class PixKeyResourceUnitTest {
     
+	@Autowired
+	private MockMvc mockMvc;
+	
+	@MockBean
+	private PixKeyServiceImpl service;
+	
+	private PixKey pixKey;
+	
+	private JacksonTester<PixKey> jsonPixKey;
+	
+	private JacksonTester<List<Address>> jsonPixKeyList;
 
     private Account account;
     private PixKey pixKeyEmpty;
@@ -32,17 +43,6 @@ public class PixKeyResourceUnitTest {
     @BeforeEach
 	void setUp() {
 
-        @Autowired
-        private MockMvc mockMvc;
-
-        @MockBean
-        private PixKeyServiceImpl service;
-
-        private PixKey pixKey;
-
-	    private JacksonTester<PixKey> jsonPixKey;
-
-	    private JacksonTester<List<Address>> jsonPixKeyList;
 
 		Costumer costumer1 = new Costumer(null, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
         Address address1 = new Address(null, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", costumer1);
