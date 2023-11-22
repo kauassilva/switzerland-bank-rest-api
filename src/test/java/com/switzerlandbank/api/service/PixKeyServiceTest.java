@@ -170,19 +170,6 @@ class PixKeyServiceTest {
 		assertNotNull(pixKeyService.generateRandomKey());
 	}
 
-	/*
-	@Test
-	void PixKeyRandomValidateTeste(){
-		String randomKey = pixKeyService.generateRandomKey();
-		assertNotNull(randomKey);
-	}
-
-	@Test
-	void pixKeyGenerateRandomKey(){
-		String randomKey = pixKeyService.generateRandomKey();
-		assertNotNull(randomKey);
-	}*/
-
 }	
 
 
