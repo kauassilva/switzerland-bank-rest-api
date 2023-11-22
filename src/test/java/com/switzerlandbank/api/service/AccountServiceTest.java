@@ -1,10 +1,13 @@
 package com.switzerlandbank.api.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.internal.matchers.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.switzerlandbank.api.entities.Account;
@@ -24,6 +28,7 @@ import com.switzerlandbank.api.entities.Costumer;
 import com.switzerlandbank.api.entities.enums.Gender;
 import com.switzerlandbank.api.repositories.AccountRepository;
 import com.switzerlandbank.api.repositories.CostumerRepository;
+import com.switzerlandbank.api.services.AccountService;
 import com.switzerlandbank.api.services.BalanceService;
 import com.switzerlandbank.api.services.exceptions.ResourceNotFoundException;
 import com.switzerlandbank.api.services.impls.AccountServiceImpl;
@@ -97,5 +102,13 @@ public class AccountServiceTest {
 		Account result = accountService.insert(costumer);
 		assertEquals(account, result);
 	}
+
+  
+    @Test
+	void generateAccountNumber(){
+		
+		assertNotNull(accountService.generateAccountNumber());
+	}
+
 
 }
