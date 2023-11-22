@@ -164,15 +164,13 @@ class PixKeyServiceTest {
 	}
 	
 	//LEMBRAR DE PERGUNTAR PRO PROFESSOR
-	//@Test
-	//void PixKeyRandomValidate(){
-		//when(accountRepository.getReferenceById(1L)).thenReturn(account);
-		//pixKeyService.validateKeyType(pixKeyRandom);
-		//verify(pixKeyService, times(1)).generateRandomKey();
-		
-	
-	//}
+	@Test
+	void PixKeyRandomValidate(){
+		pixKeyService.validateKeyType(pixKeyRandom);
+		assertNotNull(pixKeyService.generateRandomKey());
+	}
 
+	/*
 	@Test
 	void PixKeyRandomValidateTeste(){
 		String randomKey = pixKeyService.generateRandomKey();
@@ -183,10 +181,8 @@ class PixKeyServiceTest {
 	void pixKeyGenerateRandomKey(){
 		String randomKey = pixKeyService.generateRandomKey();
 		assertNotNull(randomKey);
-	}
+	}*/
 
-	
-
-	}	
+}	
 
 
