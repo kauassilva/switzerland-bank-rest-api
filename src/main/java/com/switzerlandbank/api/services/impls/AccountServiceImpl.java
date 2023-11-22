@@ -43,7 +43,7 @@ public class AccountServiceImpl implements AccountService {
 		return account;
 	}
 	
-	private String generateAccountNumber() {
+	public String generateAccountNumber() {
 		Random random = new Random();
 		int n = random.nextInt(900000) + 100000;
 		return String.valueOf(n);
