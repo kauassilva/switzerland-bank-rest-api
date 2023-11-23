@@ -1,4 +1,4 @@
-package com.switzerlandbank.api.service;
+package com.switzerlandbank.api.service.units;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -26,7 +26,7 @@ import com.switzerlandbank.api.repositories.AddressRepository;
 import com.switzerlandbank.api.services.exceptions.ResourceNotFoundException;
 import com.switzerlandbank.api.services.impls.AddressServiceImpl;
 
-public class AddressServiceTest {
+public class AddressServiceUnitTest {
     
     @Mock
     private AddressRepository addressRepository;

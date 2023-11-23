@@ -1,4 +1,4 @@
-package com.switzerlandbank.api.service;
+package com.switzerlandbank.api.service.units;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -33,7 +33,7 @@ import com.switzerlandbank.api.services.BalanceService;
 import com.switzerlandbank.api.services.exceptions.ResourceNotFoundException;
 import com.switzerlandbank.api.services.impls.AccountServiceImpl;
 
-public class AccountServiceTest {
+public class AccountServiceUnitTest {
 
 	@Mock
 	private BalanceService balanceService;

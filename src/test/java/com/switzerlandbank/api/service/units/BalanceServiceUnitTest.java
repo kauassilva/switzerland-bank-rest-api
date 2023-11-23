@@ -1,4 +1,4 @@
-package com.switzerlandbank.api.service;
+package com.switzerlandbank.api.service.units;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -31,7 +31,7 @@ import com.switzerlandbank.api.repositories.BalanceRepository;
 import com.switzerlandbank.api.services.exceptions.ResourceNotFoundException;
 import com.switzerlandbank.api.services.impls.BalanceServiceImpl;
 
-class BalanceServiceTest {
+class BalanceServiceUnitTest {
 
 	@Mock
     private BalanceRepository repository;

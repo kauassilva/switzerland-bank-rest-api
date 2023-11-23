@@ -1,4 +1,4 @@
-package com.switzerlandbank.api.service;
+package com.switzerlandbank.api.service.units;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -30,7 +30,7 @@ import com.switzerlandbank.api.services.impls.CostumerServiceImpl;
 
 import jakarta.persistence.EntityNotFoundException;
 
-class CostumerServiceTest {
+class CostumerServiceUnitTest {
 
 	@Mock
 	private CostumerRepository clientRepository;

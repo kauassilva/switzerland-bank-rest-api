@@ -1,4 +1,4 @@
-package com.switzerlandbank.api.service;
+package com.switzerlandbank.api.service.units;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -37,7 +37,7 @@ import com.switzerlandbank.api.services.PixKeyService;
 import com.switzerlandbank.api.services.exceptions.ResourceNotFoundException;
 import com.switzerlandbank.api.services.impls.PixKeyServiceImpl;
 
-class PixKeyServiceTest {
+class PixKeyServiceUnitTest {
 
 	@Mock
 	private PixKeyRepository pixKeyRepository;
