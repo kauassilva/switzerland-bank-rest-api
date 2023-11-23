@@ -14,6 +14,7 @@ import com.switzerlandbank.api.services.CostumerService;
 import com.switzerlandbank.api.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 
 @Service
 public class CostumerServiceImpl implements CostumerService {
@@ -39,6 +40,7 @@ public class CostumerServiceImpl implements CostumerService {
 	}
 	
 	@Override
+	@Transactional
 	public Costumer insert(Costumer obj) {
 		obj.getAddress().setCostumer(obj);
 		Costumer savedClient = costumerRepository.save(obj);
