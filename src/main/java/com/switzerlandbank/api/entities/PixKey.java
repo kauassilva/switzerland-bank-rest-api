@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tb_pixkey")
@@ -22,10 +23,12 @@ public class PixKey implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String keyValue;
+	@NotNull(message = "cannot be null")
 	private Integer keyType;
 	
 	@ManyToOne
 	@JoinColumn(name = "account_id")
+	@NotNull(message = "cannot be null")
 	private Account account;
 	
 	public PixKey() {
@@ -34,7 +37,7 @@ public class PixKey implements Serializable {
 	public PixKey(Long id, String keyValue, KeyType keyType, Account account) {
 		this.id = id;
 		this.keyValue = keyValue;
-		this.setKeyType(keyType);;
+		this.setKeyType(keyType);
 		this.account = account;
 	}
 

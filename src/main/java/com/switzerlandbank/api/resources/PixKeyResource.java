@@ -17,8 +17,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.switzerlandbank.api.entities.PixKey;
 import com.switzerlandbank.api.services.PixKeyService;
 
+import jakarta.validation.Valid;
+
 @RestController
-@RequestMapping("/api/pixkeys")
+@RequestMapping(value = "/api/pixkeys")
 public class PixKeyResource {
 	
 	@Autowired
@@ -29,27 +31,27 @@ public class PixKeyResource {
 		List<PixKey> list = service.findAll();
 		return ResponseEntity.ok().body(list);
 	}
-	
-	@GetMapping("/account/{accountId}")
+
+	@GetMapping(value = "/account/{accountId}")
 	public ResponseEntity<List<PixKey>> findByAccountId(@PathVariable Long accountId) {
 		List<PixKey> list = service.findByAccountId(accountId);
 		return ResponseEntity.ok().body(list);
 	}
-	
-	@GetMapping("/{id}")
+
+	@GetMapping(value = "/{id}")
 	public ResponseEntity<PixKey> findById(@PathVariable Long id) {
 		PixKey obj = service.findById(id);
 		return ResponseEntity.ok().body(obj);
 	}
 	
 	@PostMapping
-	public ResponseEntity<PixKey> insert(@RequestBody PixKey obj) {
+	public ResponseEntity<PixKey> insert(@RequestBody @Valid PixKey obj) {
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).body(obj);
 	}
 	
-	@DeleteMapping("/{id}")
+	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
