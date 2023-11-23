@@ -32,10 +32,8 @@ class CostumerRepositoryIntegrationTest {
 
 	@BeforeEach
 	void setUp() {
-		costumer = new Costumer(null, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"),
-				Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
-		Address address = new Address(null, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins",
-				"77600000", costumer);
+		costumer = new Costumer(null, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
+		Address address = new Address(null, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", costumer);
 		costumer.setAddress(address);
 	}
 
