@@ -50,6 +50,7 @@ public class CostumerServiceImpl implements CostumerService {
 	}
 	
 	@Override
+	@Transactional
 	public void delete(Long id) {
 		if (!costumerRepository.existsById(id)) {
 			throw new ResourceNotFoundException(id);		
@@ -58,6 +59,7 @@ public class CostumerServiceImpl implements CostumerService {
 	}
 	
 	@Override
+	@Transactional
 	public Costumer update(Costumer newDataObj, Long id) {
 		try {
 			Costumer entity = costumerRepository.getReferenceById(id);

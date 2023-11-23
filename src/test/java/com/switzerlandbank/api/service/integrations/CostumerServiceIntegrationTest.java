@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.time.LocalDate;
 import java.util.List;
 
-import org.hibernate.Hibernate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,20 +90,30 @@ class CostumerServiceIntegrationTest {
 		assertThrows(ResourceNotFoundException.class, () -> costumerService.delete(id));
 	}
 	
-	// TODO: Fix LazyInitializationException
-	/*@Test
+	@Test
 	void testUpdate_Success() {
 		Costumer savedCostumer = costumerService.insert(newCostumer);
 		
-		Costumer newDataCostumer = new Costumer(null, "João Silva 2", "22222222222", "Maria Silva 2", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva2@example.com", "JoaoSilva222");
-		Address newDataAddress = new Address(null, "Av. Castelo Branco 2", "14162", "Centro 2", "Paraíso do Tocantins 2", "Tocantins 2", "00000000", newCostumer);
+		Costumer newDataCostumer = new Costumer(savedCostumer.getId(), "João Silva 2", "22222222222", "Maria Silva 2", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva2@example.com", "JoaoSilva222");
+		Address newDataAddress = new Address(savedCostumer.getId(), "Av. Castelo Branco 2", "14162", "Centro 2", "Paraíso do Tocantins 2", "Tocantins 2", "00000000", newCostumer);
 		newDataCostumer.setAddress(newDataAddress);
 		
-		Costumer foundCostumer = costumerService.findById(savedCostumer.getId());
-
 		Costumer updatedCostumer = costumerService.update(newDataCostumer, savedCostumer.getId());
+
+		Costumer foundCostumer = costumerService.findById(savedCostumer.getId());
 		
 		assertEquals(foundCostumer, updatedCostumer);
-	}*/
+	}
+	
+	@Test
+	void testUpdate_ThrowsResourceNotFoundException() {
+		Costumer savedCostumer = costumerService.insert(newCostumer);
+		
+		Costumer newDataCostumer = new Costumer(savedCostumer.getId(), "João Silva 2", "22222222222", "Maria Silva 2", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva2@example.com", "JoaoSilva222");
+		Address newDataAddress = new Address(savedCostumer.getId(), "Av. Castelo Branco 2", "14162", "Centro 2", "Paraíso do Tocantins 2", "Tocantins 2", "00000000", newCostumer);
+		newDataCostumer.setAddress(newDataAddress);
+
+		assertThrows(ResourceNotFoundException.class, () -> costumerService.update(newDataCostumer, savedCostumer.getId() + 1));
+	}
 
 }
