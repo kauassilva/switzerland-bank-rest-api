@@ -35,7 +35,6 @@ public class AccountServiceIntegrationTest {
     private Costumer costumer;
     private Account account;
     private Account newAccount;
-    
 
     @BeforeEach
     void setUp() {
@@ -51,7 +50,10 @@ public class AccountServiceIntegrationTest {
         Address newAddress = new Address(null, "Av. Castelo Branco 2", "14162", "Centro 2", "Paraíso do Tocantins 2",
                 "Tocantins 2", "00000000", newCostumer);
 
+        newAccount = new Account(null, null, newCostumer);
+
         costumer.setAddress(address);
+        newCostumer.setAddress(newAddress);
         account = new Account(1L, "123456", costumer);
         costumer.setAccount(account);
     }
@@ -66,26 +68,27 @@ public class AccountServiceIntegrationTest {
     }
 
     @Test
-	void testFindById_ReturnAccount() {
-		Long id = 1L;
-		
-		Account result = accountService.findById(id);
-		
-		assertEquals(account, result);
-	}
+    void testFindById_ReturnAccount() {
+        Long id = 1L;
+
+        Account result = accountService.findById(id);
+
+        assertEquals(account, result);
+    }
 
     @Test
-	void testFindById_ThrowsResourceNotFoundException() {
-		Long id = 0L;
-		
-		assertThrows(ResourceNotFoundException.class, () -> accountService.findById(id));
-	}
+    void testFindById_ThrowsResourceNotFoundException() {
+        Long id = 0L;
 
-   // @Test
-	//void testInsert() {		
-	//	Account result = accountService.insert(newAccount);
+        assertThrows(ResourceNotFoundException.class, () -> accountService.findById(id));
+    }
 
-		//assertEquals(newAccount, result);
-	//}
+    @Test
+    void testInsert() {
+        Account result = accountService.insert(newCostumer);
+
+        newAccount.setId(result.getId());
+        assertEquals(newAccount, result);
+    }
 
 }

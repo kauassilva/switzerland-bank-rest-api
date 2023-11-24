@@ -14,6 +14,8 @@ import com.switzerlandbank.api.services.AccountService;
 import com.switzerlandbank.api.services.BalanceService;
 import com.switzerlandbank.api.services.exceptions.ResourceNotFoundException;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class AccountServiceImpl implements AccountService {
 
@@ -34,6 +36,7 @@ public class AccountServiceImpl implements AccountService {
 		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 
+	@Transactional
 	@Override
 	public Account insert(Costumer savedClient) {
 		Account account = new Account(null, generateAccountNumber(), savedClient);
