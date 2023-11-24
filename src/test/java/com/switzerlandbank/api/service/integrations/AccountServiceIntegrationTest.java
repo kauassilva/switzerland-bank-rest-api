@@ -83,6 +83,7 @@ public class AccountServiceIntegrationTest {
         assertThrows(ResourceNotFoundException.class, () -> accountService.findById(id));
     }
 
+    
     @Test
     void testInsert() {
         Account result = accountService.insert(newCostumer);

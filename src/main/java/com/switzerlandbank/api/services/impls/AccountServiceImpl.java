@@ -44,6 +44,7 @@ public class AccountServiceImpl implements AccountService {
 	
 		balanceService.insert(account);
 		return account;
+		
 	}
 	
 	public String generateAccountNumber() {
