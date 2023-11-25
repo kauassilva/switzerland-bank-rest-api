@@ -174,15 +174,24 @@ public class PixKeyResourceIntegrationTest {
 		assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
 	}
 
-	// NÃO TERMINEI
-	// @Test
-	// void testInsert_ReturnsCorrectContentPixKeyTypeCPF() {
-	// 	HttpEntity<PixKey> httpEntity = new HttpEntity<>(pixKeyCPF);
+	@Test
+	void testDelete_ReturnsStatusNoContent() {
+		PixKey savedPixKey = repository.save(pixKey);
 		
-	// 	ResponseEntity<PixKey> response = testRestTemplate
-	// 			.exchange("/api/pixkeys/" , HttpMethod.POST, httpEntity, PixKey.class);
+		ResponseEntity<Void> response = testRestTemplate
+				.exchange("/api/pixkeys/" + savedPixKey.getId(), HttpMethod.DELETE, null, Void.class);
 		
-	// 	assertEquals(httpEntity.get(), response.getBody());
-	// }
+		assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+	}
+
+	@Test
+	void testDelete_ReturnsStatusNotFound() {
+		Long id = -1L;
+		
+		ResponseEntity<Void> response = testRestTemplate
+				.exchange("/api/pixkeys/" + id, HttpMethod.DELETE, null, Void.class);
+		
+		assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+	}
 
 }
