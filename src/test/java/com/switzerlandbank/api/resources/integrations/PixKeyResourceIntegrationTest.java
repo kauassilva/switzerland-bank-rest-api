@@ -51,15 +51,12 @@ public class PixKeyResourceIntegrationTest {
 	
 	private PixKey pixKey;
 
-    private PixKey pixKeyEmpty;
-
     private PixKey pixKeyCPF;
 
     private PixKey pixKeyEmail;
 
     private PixKey pixKeyRandom;
 
-    private ListCrudRepository<PixKey, Long> service;
     
     @BeforeEach
 	void setUp() {
@@ -71,12 +68,9 @@ public class PixKeyResourceIntegrationTest {
 		costumer1.setAccount(account);
 
 		pixKey = new PixKey(null, null, KeyType.CPF, account);
-		pixKeyEmpty = new PixKey(2L, null, KeyType.CPF, account);
-		pixKeyCPF = new PixKey(3L, null, KeyType.CPF, account);
-		pixKeyEmail = new PixKey(4L, null, KeyType.EMAIL, account);
-		pixKeyRandom = new PixKey(5L, null, KeyType.RANDOM, account);
-		MockitoAnnotations.openMocks(this);
-
+		pixKeyCPF = new PixKey(null, null, KeyType.CPF, account);
+		pixKeyEmail = new PixKey(null, null, KeyType.EMAIL, account);
+		pixKeyRandom = new PixKey(null, null, KeyType.RANDOM, account);
 	}
 
     @Test
@@ -150,6 +144,42 @@ public class PixKeyResourceIntegrationTest {
 				.exchange("/api/pixkeys/" + expectedResult.get().getId(), HttpMethod.GET, null, PixKey.class);
 		
 		assertEquals(expectedResult.get(), response.getBody());
+	}
+
+	@Test
+	void testInsert_ReturnsCorrectContentPixKeyTypeCPF() {
+		HttpEntity<PixKey> httpEntity = new HttpEntity<>(pixKeyCPF);
+		
+		ResponseEntity<PixKey> response = testRestTemplate
+				.exchange("/api/pixkeys", HttpMethod.POST, httpEntity, PixKey.class);
+		
+		Optional<PixKey> expectedPixKey = repository.findById(response.getBody().getId());
+
+		assertEquals(expectedPixKey.get(), response.getBody());
+	}
+
+	@Test
+	void testInsert_ReturnsCorrectContentPixKeyTypeEmail() {
+		HttpEntity<PixKey> httpEntity = new HttpEntity<>(pixKeyEmail);
+		
+		ResponseEntity<PixKey> response = testRestTemplate
+				.exchange("/api/pixkeys", HttpMethod.POST, httpEntity, PixKey.class);
+		
+		Optional<PixKey> expectedPixKey = repository.findById(response.getBody().getId());
+
+		assertEquals(expectedPixKey.get(), response.getBody());
+	}
+
+	@Test
+	void testInsert_ReturnsCorrectContentPixKeyTypeRandom() {
+		HttpEntity<PixKey> httpEntity = new HttpEntity<>(pixKeyRandom);
+		
+		ResponseEntity<PixKey> response = testRestTemplate
+				.exchange("/api/pixkeys", HttpMethod.POST, httpEntity, PixKey.class);
+		
+		Optional<PixKey> expectedPixKey = repository.findById(response.getBody().getId());
+
+		assertEquals(expectedPixKey.get(), response.getBody());
 	}
 
 	@Test
