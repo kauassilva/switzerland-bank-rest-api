@@ -4,36 +4,27 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDate;
-import java.util.List;
+
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.TransactionSystemException;
 
-import com.switzerlandbank.api.entities.Account;
 import com.switzerlandbank.api.entities.Address;
 import com.switzerlandbank.api.entities.Costumer;
 import com.switzerlandbank.api.entities.enums.Gender;
-import com.switzerlandbank.api.repositories.AddressRepository;
 import com.switzerlandbank.api.services.AddressService;
 import com.switzerlandbank.api.services.exceptions.ResourceNotFoundException;
-
-import jakarta.validation.ConstraintViolationException;
 
 @SpringBootTest
 class AddressServiceIntegrationTest {
 	
 	@Autowired
 	private AddressService addressService;
-	
-	@Autowired
-	private AddressRepository addressRepository;
 
 	private Address address;
 
-	private Address newAddress;
 
 	@BeforeEach
 	void setUp() throws Exception {
