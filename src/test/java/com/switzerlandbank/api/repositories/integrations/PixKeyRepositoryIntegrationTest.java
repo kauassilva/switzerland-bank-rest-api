@@ -15,13 +15,12 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import com.switzerlandbank.api.entities.Account;
 import com.switzerlandbank.api.entities.Address;
-import com.switzerlandbank.api.entities.Costumer;
+import com.switzerlandbank.api.entities.Customer;
 import com.switzerlandbank.api.entities.PixKey;
 import com.switzerlandbank.api.entities.enums.Gender;
 import com.switzerlandbank.api.entities.enums.KeyType;
 import com.switzerlandbank.api.repositories.AccountRepository;
 import com.switzerlandbank.api.repositories.PixKeyRepository;
-import com.switzerlandbank.api.services.exceptions.ResourceNotFoundException;
 
 import jakarta.validation.ConstraintViolationException;
 
@@ -39,11 +38,11 @@ public class PixKeyRepositoryIntegrationTest {
 
     @BeforeEach
     void setUp(){
-        Costumer costumer1 = new Costumer(null, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
-        Address address1 = new Address(null, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", costumer1);
-        costumer1.setAddress(address1);
-        account = new Account(null, "123456", costumer1);
-        costumer1.setAccount(account);
+        Customer customer1 = new Customer(null, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
+        Address address1 = new Address(null, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", customer1);
+        customer1.setAddress(address1);
+        account = new Account(null, "123456", customer1);
+        customer1.setAccount(account);
         pixKeyEmpty = new PixKey(null, "1", KeyType.CPF, account);
     }
 

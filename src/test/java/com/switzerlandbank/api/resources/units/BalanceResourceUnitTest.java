@@ -9,10 +9,7 @@ import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.assertj.core.util.Lists;
-import org.hibernate.mapping.Collection;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,6 +20,8 @@ import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -98,13 +97,6 @@ class BalanceResourceUnitTest {
         when(balanceService.findById(2L)).thenThrow(ResourceNotFoundException.class);
         MockHttpServletResponse response = mockMvc.perform(get("/api/balances/2").accept(MediaType.APPLICATION_JSON)).andReturn().getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
-    }
-
-
-
-
-
-
-    
+    }    
     
 }

@@ -24,7 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.switzerlandbank.api.entities.Account;
 import com.switzerlandbank.api.entities.Address;
 import com.switzerlandbank.api.entities.Balance;
-import com.switzerlandbank.api.entities.Costumer;
+import com.switzerlandbank.api.entities.Customer;
 import com.switzerlandbank.api.entities.enums.Gender;
 import com.switzerlandbank.api.repositories.AccountRepository;
 import com.switzerlandbank.api.repositories.BalanceRepository;
@@ -49,15 +49,13 @@ class BalanceServiceUnitTest {
 
     @BeforeEach
     void setUp() {
-        Costumer costumer1 = new Costumer(null, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
-        Address address1 = new Address(null, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", costumer1);
-        costumer1.setAddress(address1);
-        account = new Account(1L, "123456", costumer1);
-		costumer1.setAccount(account);
+        Customer customer1 = new Customer(null, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
+        Address address1 = new Address(null, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", customer1);
+        customer1.setAddress(address1);
+        account = new Account(1L, "123456", customer1);
+		customer1.setAccount(account);
         balance = new Balance(1L, new BigDecimal(3), Instant.now(), null);
-        MockitoAnnotations.openMocks(this);
-
-       
+        MockitoAnnotations.openMocks(this);       
     }
 
     @Test
@@ -75,8 +73,6 @@ class BalanceServiceUnitTest {
         when(repository.findAll()).thenReturn(Collections.emptyList());
         List<Balance> result = service.findAll();
         assertTrue(result.isEmpty());
-        
-
     }
 
     @Test
@@ -84,7 +80,6 @@ class BalanceServiceUnitTest {
         when(repository.findById(1L)).thenReturn(Optional.of(balance));
         Balance result = service.findById(1L);
         assertEquals(balance, result);
-
     }
 
     @Test

@@ -4,13 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Answers.valueOf;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,19 +18,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.switzerlandbank.api.entities.Account;
 import com.switzerlandbank.api.entities.Address;
-import com.switzerlandbank.api.entities.Costumer;
+import com.switzerlandbank.api.entities.Customer;
 import com.switzerlandbank.api.entities.PixKey;
 import com.switzerlandbank.api.entities.enums.Gender;
 import com.switzerlandbank.api.entities.enums.KeyType;
 import com.switzerlandbank.api.repositories.AccountRepository;
 import com.switzerlandbank.api.repositories.PixKeyRepository;
-import com.switzerlandbank.api.services.PixKeyService;
 import com.switzerlandbank.api.services.exceptions.ResourceNotFoundException;
 import com.switzerlandbank.api.services.impls.PixKeyServiceImpl;
 
@@ -57,11 +52,11 @@ class PixKeyServiceUnitTest {
 
 	@BeforeEach
 	void setUp() {
-		Costumer costumer1 = new Costumer(null, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
-        Address address1 = new Address(null, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", costumer1);
-        costumer1.setAddress(address1);
-        account = new Account(1L, "123456", costumer1);
-		costumer1.setAccount(account);
+		Customer customer1 = new Customer(null, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
+        Address address1 = new Address(null, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", customer1);
+        customer1.setAddress(address1);
+        account = new Account(1L, "123456", customer1);
+		customer1.setAccount(account);
 
 		pixKeyEmpty = new PixKey(1L, "1", KeyType.CPF, account);
 		pixKeyCPF = new PixKey(1L, null, KeyType.CPF, account);
@@ -153,14 +148,14 @@ class PixKeyServiceUnitTest {
 	void PixKeyCpfValidate(){
 		when(accountRepository.getReferenceById(1L)).thenReturn(account);
 		pixKeyService.validateKeyType(pixKeyCPF);
-		assertEquals(account.getCostumer().getCpf(), pixKeyCPF.getKeyValue());
+		assertEquals(account.getCustomer().getCpf(), pixKeyCPF.getKeyValue());
 	}
 
 	@Test
 	void PixKeyEmailValidate(){
 		when(accountRepository.getReferenceById(1L)).thenReturn(account);
 		pixKeyService.validateKeyType(pixKeyEmail);
-		assertEquals(account.getCostumer().getEmail(), pixKeyEmail.getKeyValue());
+		assertEquals(account.getCustomer().getEmail(), pixKeyEmail.getKeyValue());
 	}
 	
 	//LEMBRAR DE PERGUNTAR PRO PROFESSOR

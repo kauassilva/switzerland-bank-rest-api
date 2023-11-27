@@ -1,40 +1,30 @@
 package com.switzerlandbank.api.resources.integrations;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mock.web.MockHttpServletResponse;
 
 import com.switzerlandbank.api.entities.Account;
 import com.switzerlandbank.api.entities.Address;
-import com.switzerlandbank.api.entities.Costumer;
+import com.switzerlandbank.api.entities.Customer;
 import com.switzerlandbank.api.entities.PixKey;
 import com.switzerlandbank.api.entities.enums.Gender;
 import com.switzerlandbank.api.entities.enums.KeyType;
-import com.switzerlandbank.api.repositories.CostumerRepository;
 import com.switzerlandbank.api.repositories.PixKeyRepository;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -61,7 +51,7 @@ public class PixKeyResourceIntegrationTest {
     @BeforeEach
 	void setUp() {
 
-		Costumer costumer1 = new Costumer(null, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
+		Customer costumer1 = new Customer(null, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
         Address address1 = new Address(null, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", costumer1);
         costumer1.setAddress(address1);
         account = new Account(1L, "123456", costumer1);

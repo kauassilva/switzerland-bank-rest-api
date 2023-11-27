@@ -20,7 +20,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.switzerlandbank.api.entities.Address;
-import com.switzerlandbank.api.entities.Costumer;
+import com.switzerlandbank.api.entities.Customer;
 import com.switzerlandbank.api.entities.enums.Gender;
 import com.switzerlandbank.api.repositories.AddressRepository;
 import com.switzerlandbank.api.services.exceptions.ResourceNotFoundException;
@@ -39,9 +39,9 @@ public class AddressServiceUnitTest {
     @BeforeEach
 	void setUp() {
 		MockitoAnnotations.openMocks(this);
-		Costumer costumer = new Costumer(1L, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
-		address = new Address(1L, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", costumer);
-		costumer.setAddress(address);
+		Customer customer = new Customer(1L, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
+		address = new Address(1L, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", customer);
+		customer.setAddress(address);
 	}
 
     @Test
@@ -78,9 +78,9 @@ public class AddressServiceUnitTest {
 	
 	@Test
 	void testUpdate_VerifySaveWithExistingClient() {
-		Costumer costumer = new Costumer(1L, "Carlos Pereira", "11122233344", "Teresa Pereira", LocalDate.parse("1975-10-10"), Gender.OTHER, "carlospereira@gmail.com", "CarlosPereira123");
-		Address newAddress = new Address(1L, "R. Cento e Cinquenta e Dois", "196", "Laranjal", "Volta Redonda", "Rio de Janeiro", "27255020", costumer);
-		costumer.setAddress(newAddress);
+		Customer customer = new Customer(1L, "Carlos Pereira", "11122233344", "Teresa Pereira", LocalDate.parse("1975-10-10"), Gender.OTHER, "carlospereira@gmail.com", "CarlosPereira123");
+		Address newAddress = new Address(1L, "R. Cento e Cinquenta e Dois", "196", "Laranjal", "Volta Redonda", "Rio de Janeiro", "27255020", customer);
+		customer.setAddress(newAddress);
 		
 		when(addressRepository.getReferenceById(1L)).thenReturn(address);
 

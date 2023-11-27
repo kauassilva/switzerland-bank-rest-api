@@ -26,7 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.switzerlandbank.api.entities.Account;
 import com.switzerlandbank.api.entities.Address;
-import com.switzerlandbank.api.entities.Costumer;
+import com.switzerlandbank.api.entities.Customer;
 import com.switzerlandbank.api.entities.enums.Gender;
 import com.switzerlandbank.api.resources.AccountResource;
 import com.switzerlandbank.api.services.exceptions.ResourceNotFoundException;
@@ -53,11 +53,11 @@ class AccountResourceUnitTest {
 	
 	@BeforeEach
 	void setUp() {
-		Costumer costumer = new Costumer(1L, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
-		Address address = new Address(1L, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", costumer);
-		costumer.setAddress(address);
-		account = new Account(1L, "123456", costumer);
-		costumer.setAccount(account);
+		Customer customer = new Customer(1L, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
+		Address address = new Address(1L, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", customer);
+		customer.setAddress(address);
+		account = new Account(1L, "123456", customer);
+		customer.setAccount(account);
 	}
 	
 	@Test

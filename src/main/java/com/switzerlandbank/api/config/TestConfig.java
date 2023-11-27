@@ -13,12 +13,12 @@ import org.springframework.context.annotation.Profile;
 import com.switzerlandbank.api.entities.Account;
 import com.switzerlandbank.api.entities.Address;
 import com.switzerlandbank.api.entities.Balance;
-import com.switzerlandbank.api.entities.Costumer;
+import com.switzerlandbank.api.entities.Customer;
 import com.switzerlandbank.api.entities.PixKey;
 import com.switzerlandbank.api.entities.enums.Gender;
 import com.switzerlandbank.api.entities.enums.KeyType;
 import com.switzerlandbank.api.repositories.AccountRepository;
-import com.switzerlandbank.api.repositories.CostumerRepository;
+import com.switzerlandbank.api.repositories.CustomerRepository;
 import com.switzerlandbank.api.repositories.PixKeyRepository;
 
 @Configuration
@@ -26,7 +26,7 @@ import com.switzerlandbank.api.repositories.PixKeyRepository;
 public class TestConfig implements CommandLineRunner {
 
 	@Autowired
-	private CostumerRepository costumerRepository;
+	private CustomerRepository customerRepository;
 	
 	@Autowired
 	private AccountRepository accountRepository;
@@ -38,27 +38,27 @@ public class TestConfig implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		
 		
-		Costumer costumer1 = new Costumer(null, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
-		Costumer costumer2 = new Costumer(null, "Carlos Pereira", "11122233344", "Teresa Pereira", LocalDate.parse("1975-10-10"), Gender.OTHER, "carlospereira@gmail.com", "CarlosPereira123");
-		Costumer costumer3 = new Costumer(null, "Ana Santos", "98765432100", "Beatriz Santos", LocalDate.parse("1990-02-20"), Gender.FEMALE, "anasantos@example.com", "AnaSantos123");
+		Customer customer1 = new Customer(null, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
+		Customer customer2 = new Customer(null, "Carlos Pereira", "11122233344", "Teresa Pereira", LocalDate.parse("1975-10-10"), Gender.OTHER, "carlospereira@gmail.com", "CarlosPereira123");
+		Customer customer3 = new Customer(null, "Ana Santos", "98765432100", "Beatriz Santos", LocalDate.parse("1990-02-20"), Gender.FEMALE, "anasantos@example.com", "AnaSantos123");
 
-		Address address1 = new Address(null, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", costumer1);
-		Address address2 = new Address(null, "R. Cento e Cinquenta e Dois", "196", "Laranjal", "Volta Redonda", "Rio de Janeiro", "27255020", costumer2);
-		Address address3 = new Address(null, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", costumer3);
+		Address address1 = new Address(null, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", customer1);
+		Address address2 = new Address(null, "R. Cento e Cinquenta e Dois", "196", "Laranjal", "Volta Redonda", "Rio de Janeiro", "27255020", customer2);
+		Address address3 = new Address(null, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", customer3);
 
-		costumer1.setAddress(address1);
-		costumer2.setAddress(address2);
-		costumer3.setAddress(address3);
+		customer1.setAddress(address1);
+		customer2.setAddress(address2);
+		customer3.setAddress(address3);
 		
-		Account account1 = new Account(null, "123456", costumer1);
-		Account account2 = new Account(null, "789012", costumer2);
-		Account account3 = new Account(null, "345678", costumer3);
+		Account account1 = new Account(null, "123456", customer1);
+		Account account2 = new Account(null, "789012", customer2);
+		Account account3 = new Account(null, "345678", customer3);
 		
-		costumer1.setAccount(account1);
-		costumer2.setAccount(account2);
-		costumer3.setAccount(account3);
+		customer1.setAccount(account1);
+		customer2.setAccount(account2);
+		customer3.setAccount(account3);
 
-		costumerRepository.saveAll(Arrays.asList(costumer1, costumer2, costumer3));
+		customerRepository.saveAll(Arrays.asList(customer1, customer2, customer3));
 		
 		Balance balance1 = new Balance(null, new BigDecimal("10.00"), Instant.now(), account1);
 		Balance balance2 = new Balance(null, new BigDecimal("10.00"), Instant.now(), account2);

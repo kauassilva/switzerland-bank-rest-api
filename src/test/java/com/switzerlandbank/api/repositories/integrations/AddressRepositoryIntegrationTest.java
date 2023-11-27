@@ -17,7 +17,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.orm.jpa.JpaSystemException;
 
 import com.switzerlandbank.api.entities.Address;
-import com.switzerlandbank.api.entities.Costumer;
+import com.switzerlandbank.api.entities.Customer;
 import com.switzerlandbank.api.entities.enums.Gender;
 import com.switzerlandbank.api.repositories.AddressRepository;
 
@@ -29,13 +29,13 @@ class AddressRepositoryIntegrationTest {
 	private AddressRepository addressRepository;
 	
 	private Address address;
-	private Costumer costumer;
+	private Customer customer;
 	
 	@BeforeEach
 	void setUp() {
-		costumer = new Costumer(null, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
-		address = new Address(null, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", costumer);
-		costumer.setAddress(address);
+		customer = new Customer(null, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
+		address = new Address(null, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", customer);
+		customer.setAddress(address);
 	}
 	
 	@Test
@@ -65,7 +65,7 @@ class AddressRepositoryIntegrationTest {
 
 	@Test
 	void testSave_ThrowsDataIntegrityViolationException() {
-		Address wrongAddress = new Address(null, null, "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", costumer);
+		Address wrongAddress = new Address(null, null, "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", customer);
 
 		assertThrows(DataIntegrityViolationException.class, () -> addressRepository.save(wrongAddress));
 	}

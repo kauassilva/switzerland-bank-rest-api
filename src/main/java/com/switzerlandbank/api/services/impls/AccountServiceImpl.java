@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.switzerlandbank.api.entities.Account;
-import com.switzerlandbank.api.entities.Costumer;
+import com.switzerlandbank.api.entities.Customer;
 import com.switzerlandbank.api.repositories.AccountRepository;
 import com.switzerlandbank.api.services.AccountService;
 import com.switzerlandbank.api.services.BalanceService;
@@ -38,7 +38,7 @@ public class AccountServiceImpl implements AccountService {
 
 	@Transactional
 	@Override
-	public Account insert(Costumer savedClient) {
+	public Account insert(Customer savedClient) {
 		Account account = new Account(null, generateAccountNumber(), savedClient);
 		account = accountRepository.save(account);
 	

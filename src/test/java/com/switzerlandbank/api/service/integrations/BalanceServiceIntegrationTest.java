@@ -19,7 +19,7 @@ import org.springframework.orm.jpa.JpaSystemException;
 import com.switzerlandbank.api.entities.Account;
 import com.switzerlandbank.api.entities.Address;
 import com.switzerlandbank.api.entities.Balance;
-import com.switzerlandbank.api.entities.Costumer;
+import com.switzerlandbank.api.entities.Customer;
 import com.switzerlandbank.api.entities.enums.Gender;
 import com.switzerlandbank.api.repositories.BalanceRepository;
 import com.switzerlandbank.api.services.exceptions.ResourceNotFoundException;
@@ -43,17 +43,17 @@ public class BalanceServiceIntegrationTest {
     private Balance balance;
     @BeforeEach
     void setUp(){
-        Costumer costumerEmpty = new Costumer(null, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
-        Address addressEmpty = new Address(null, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", costumerEmpty);
-        costumerEmpty.setAddress(addressEmpty);
+        Customer customerEmpty = new Customer(null, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
+        Address addressEmpty = new Address(null, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", customerEmpty);
+        customerEmpty.setAddress(addressEmpty);
         
-        Costumer costumer1 = new Costumer(null, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
-        Address address1 = new Address(null, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", costumer1);
-        costumer1.setAddress(address1);
+        Customer customer1 = new Customer(null, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
+        Address address1 = new Address(null, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", customer1);
+        customer1.setAddress(address1);
 
-        accountEmpty = new Account(null, "123456", costumerEmpty);
-        account = new Account(null, "123456", costumer1);
-		costumer1.setAccount(accountEmpty);
+        accountEmpty = new Account(null, "123456", customerEmpty);
+        account = new Account(null, "123456", customer1);
+		customer1.setAccount(accountEmpty);
          balanceEmpty = new Balance(null, new BigDecimal("10.00"), Instant.now(), accountEmpty);
          balance = new Balance(1L, new BigDecimal("10.00"), Instant.now(), account);
 

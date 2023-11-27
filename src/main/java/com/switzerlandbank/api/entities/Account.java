@@ -26,7 +26,7 @@ public class Account implements Serializable {
 	
 	@OneToOne
 	@MapsId
-	private Costumer costumer;
+	private Customer customer;
 	
 	@OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
 	private Balance balance;
@@ -37,10 +37,10 @@ public class Account implements Serializable {
 	public Account() {
 	}
 
-	public Account(Long id, String accountNumber, Costumer costumer) {
+	public Account(Long id, String accountNumber, Customer customer) {
 		this.id = id;
 		this.accountNumber = accountNumber;
-		this.costumer = costumer;
+		this.customer = customer;
 	}
 
 	public Long getId() {
@@ -59,12 +59,12 @@ public class Account implements Serializable {
 		this.accountNumber = accountNumber;
 	}
 
-	public Costumer getCostumer() {
-		return costumer;
+	public Customer getCustomer() {
+		return customer;
 	}
 
-	public void setCostumer(Costumer costumer) {
-		this.costumer = costumer;
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
 	}
 
 	public Balance getBalance() {

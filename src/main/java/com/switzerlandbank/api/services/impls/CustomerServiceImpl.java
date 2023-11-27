@@ -6,21 +6,21 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.switzerlandbank.api.entities.Costumer;
-import com.switzerlandbank.api.repositories.CostumerRepository;
+import com.switzerlandbank.api.entities.Customer;
+import com.switzerlandbank.api.repositories.CustomerRepository;
 import com.switzerlandbank.api.services.AccountService;
 import com.switzerlandbank.api.services.AddressService;
-import com.switzerlandbank.api.services.CostumerService;
+import com.switzerlandbank.api.services.CustomerService;
 import com.switzerlandbank.api.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
 @Service
-public class CostumerServiceImpl implements CostumerService {
+public class CustomerServiceImpl implements CustomerService {
 	
 	@Autowired
-	private CostumerRepository costumerRepository;
+	private CustomerRepository customerRepository;
 	
 	@Autowired
 	private AddressService addressService;
@@ -29,49 +29,49 @@ public class CostumerServiceImpl implements CostumerService {
 	private AccountService accountService;
 	
 	@Override
-	public List<Costumer> findAll() {
-		return costumerRepository.findAll();
+	public List<Customer> findAll() {
+		return customerRepository.findAll();
 	}
 	
 	@Override
-	public Costumer findById(Long id) {
-		Optional<Costumer> obj = costumerRepository.findById(id);
+	public Customer findById(Long id) {
+		Optional<Customer> obj = customerRepository.findById(id);
 		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
 	@Override
 	@Transactional
-	public Costumer insert(Costumer obj) {
-		obj.getAddress().setCostumer(obj);
-		Costumer savedClient = costumerRepository.save(obj);
+	public Customer insert(Customer obj) {
+		obj.getAddress().setCustomer(obj);
+		Customer savedCustomer = customerRepository.save(obj);
 		
-		accountService.insert(savedClient);
-		return savedClient;
+		accountService.insert(savedCustomer);
+		return savedCustomer;
 	}
 	
 	@Override
 	@Transactional
 	public void delete(Long id) {
-		if (!costumerRepository.existsById(id)) {
+		if (!customerRepository.existsById(id)) {
 			throw new ResourceNotFoundException(id);		
 		}
-		costumerRepository.deleteById(id);
+		customerRepository.deleteById(id);
 	}
 	
 	@Override
 	@Transactional
-	public Costumer update(Costumer newDataObj, Long id) {
+	public Customer update(Customer newDataObj, Long id) {
 		try {
-			Costumer entity = costumerRepository.getReferenceById(id);
+			Customer entity = customerRepository.getReferenceById(id);
 			updateData(entity, newDataObj);
-			return costumerRepository.save(entity);			
+			return customerRepository.save(entity);			
 		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException(id);
 		}
 	}
 	
 	@Override
-	public void updateData(Costumer entity, Costumer newDataObj) {
+	public void updateData(Customer entity, Customer newDataObj) {
 		entity.setName(newDataObj.getName());
 		entity.setCpf(newDataObj.getCpf());
 		entity.setMotherName(newDataObj.getMotherName());

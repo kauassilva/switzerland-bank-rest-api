@@ -29,43 +29,43 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.switzerlandbank.api.entities.Address;
-import com.switzerlandbank.api.entities.Costumer;
+import com.switzerlandbank.api.entities.Customer;
 import com.switzerlandbank.api.entities.enums.Gender;
-import com.switzerlandbank.api.resources.CostumerResource;
+import com.switzerlandbank.api.resources.CustomerResource;
 import com.switzerlandbank.api.services.exceptions.ResourceNotFoundException;
-import com.switzerlandbank.api.services.impls.CostumerServiceImpl;
+import com.switzerlandbank.api.services.impls.CustomerServiceImpl;
 
-@WebMvcTest(controllers = CostumerResource.class)
+@WebMvcTest(controllers = CustomerResource.class)
 @AutoConfigureJsonTesters
 @ExtendWith(MockitoExtension.class)
-class CostumerResourceUnitTest {
+class CustomerResourceUnitTest {
 	
 	@Autowired
 	private MockMvc mockMvc;
 
 	@MockBean
-	private CostumerServiceImpl service;
+	private CustomerServiceImpl service;
 	
 	@Autowired
-	private JacksonTester<Costumer> jsonCostumer;
+	private JacksonTester<Customer> jsonCostumer;
 	
 	@Autowired
-	private JacksonTester<List<Costumer>> jsonCostumerList;
+	private JacksonTester<List<Customer>> jsonCostumerList;
 	
-	private Costumer costumer;
+	private Customer customer;
 	
 	@BeforeEach
 	void setUp() {
-		costumer = new Costumer(1L, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
-		Address address = new Address(1L, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", costumer);
-		costumer.setAddress(address);
+		customer = new Customer(1L, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
+		Address address = new Address(1L, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", customer);
+		customer.setAddress(address);
 	}
 
 	@Test
 	void testFindAll_ReturnsStatusOk() throws Exception {
-		when(service.findAll()).thenReturn(Lists.newArrayList(costumer));
+		when(service.findAll()).thenReturn(Lists.newArrayList(customer));
 		
-		MockHttpServletResponse response = mockMvc.perform(get("/api/costumers")
+		MockHttpServletResponse response = mockMvc.perform(get("/api/customers")
 				.accept(MediaType.APPLICATION_JSON))
 				.andReturn().getResponse();
 		
@@ -74,21 +74,21 @@ class CostumerResourceUnitTest {
 	
 	@Test
 	void testFindAll_ReturnsContentSuccessfully() throws Exception {
-		when(service.findAll()).thenReturn(Lists.newArrayList(costumer));
+		when(service.findAll()).thenReturn(Lists.newArrayList(customer));
 		
-		MockHttpServletResponse response = mockMvc.perform(get("/api/costumers")
+		MockHttpServletResponse response = mockMvc.perform(get("/api/customers")
 				.accept(MediaType.APPLICATION_JSON))
 				.andReturn().getResponse();
 		response.setCharacterEncoding("UTF-8");
 		
-		assertThat(response.getContentAsString()).isEqualTo(jsonCostumerList.write(Lists.newArrayList(costumer)).getJson());
+		assertThat(response.getContentAsString()).isEqualTo(jsonCostumerList.write(Lists.newArrayList(customer)).getJson());
 	}
 	
 	@Test
 	void testFindAll_ReturnsEmptyList() throws Exception {
 		when(service.findAll()).thenReturn(Collections.emptyList());
 		
-		MockHttpServletResponse response = mockMvc.perform(get("/api/costumers")
+		MockHttpServletResponse response = mockMvc.perform(get("/api/customers")
 				.accept(MediaType.APPLICATION_JSON))
 				.andReturn().getResponse();
 		response.setCharacterEncoding("UTF-8");
@@ -98,9 +98,9 @@ class CostumerResourceUnitTest {
 	
 	@Test
 	void testFindByID_ReturnsStatusOk() throws Exception {
-		when(service.findById(1L)).thenReturn(costumer);
+		when(service.findById(1L)).thenReturn(customer);
 		
-		MockHttpServletResponse response = mockMvc.perform(get("/api/costumers/1")
+		MockHttpServletResponse response = mockMvc.perform(get("/api/customers/1")
 				.accept(MediaType.APPLICATION_JSON))
 				.andReturn().getResponse();
 		
@@ -111,7 +111,7 @@ class CostumerResourceUnitTest {
 	void testFindById_ReturnsStatusNotFound() throws Exception {
 		when(service.findById(2L)).thenThrow(ResourceNotFoundException.class);
 		
-		MockHttpServletResponse response = mockMvc.perform(get("/api/costumers/2")
+		MockHttpServletResponse response = mockMvc.perform(get("/api/customers/2")
 				.accept(MediaType.APPLICATION_JSON))
 				.andReturn().getResponse();
 		
@@ -120,23 +120,23 @@ class CostumerResourceUnitTest {
 	
 	@Test
 	void testFindById_ReturnsCorrectContent() throws Exception {
-		when(service.findById(1L)).thenReturn(costumer);
+		when(service.findById(1L)).thenReturn(customer);
 		
-		MockHttpServletResponse response = mockMvc.perform(get("/api/costumers/1")
+		MockHttpServletResponse response = mockMvc.perform(get("/api/customers/1")
 				.accept(MediaType.APPLICATION_JSON))
 				.andReturn().getResponse();
 		response.setCharacterEncoding("UTF-8");
 		
-		assertThat(response.getContentAsString()).isEqualTo(jsonCostumer.write(costumer).getJson());
+		assertThat(response.getContentAsString()).isEqualTo(jsonCostumer.write(customer).getJson());
 	}
 	
 	@Test
 	void testInsert_ReturnsStatusCreated() throws Exception {
-		when(service.insert(costumer)).thenReturn(costumer);
+		when(service.insert(customer)).thenReturn(customer);
 		
-		MockHttpServletResponse response = mockMvc.perform(post("/api/costumers")
+		MockHttpServletResponse response = mockMvc.perform(post("/api/customers")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(jsonCostumer.write(costumer).getJson()))
+				.content(jsonCostumer.write(customer).getJson()))
 				.andReturn().getResponse();
 		
 		assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
@@ -144,13 +144,13 @@ class CostumerResourceUnitTest {
 	
 	@Test
 	void testInsert_ReturnsStatusBadRequest() throws Exception {
-		Costumer wrongCostumer = new Costumer(1L, null, "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
+		Customer wrongCostumer = new Customer(1L, null, "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
 		Address address = new Address(1L, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", wrongCostumer);
 		wrongCostumer.setAddress(address);
 		
 		when(service.insert(wrongCostumer)).thenReturn(wrongCostumer);
 		
-		MockHttpServletResponse response = mockMvc.perform(post("/api/costumers")
+		MockHttpServletResponse response = mockMvc.perform(post("/api/customers")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonCostumer.write(wrongCostumer).getJson()))
 				.andReturn().getResponse();
@@ -161,22 +161,22 @@ class CostumerResourceUnitTest {
 	
 	@Test
 	void testInsert_ReturnsCorrectContent() throws Exception {
-		when(service.insert(costumer)).thenReturn(costumer);
+		when(service.insert(customer)).thenReturn(customer);
 		
-		MockHttpServletResponse response = mockMvc.perform(post("/api/costumers")
+		MockHttpServletResponse response = mockMvc.perform(post("/api/customers")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(jsonCostumer.write(costumer).getJson()))
+				.content(jsonCostumer.write(customer).getJson()))
 				.andReturn().getResponse();
 		response.setCharacterEncoding("UTF-8");
 		
-		assertThat(response.getContentAsString()).isEqualTo(jsonCostumer.write(costumer).getJson());
+		assertThat(response.getContentAsString()).isEqualTo(jsonCostumer.write(customer).getJson());
 	}
 	
 	@Test
 	void testDelete_ReturnsStatusNoContent() throws Exception {
 		doNothing().when(service).delete(1L);
 		
-		MockHttpServletResponse response = mockMvc.perform(delete("/api/costumers/1"))
+		MockHttpServletResponse response = mockMvc.perform(delete("/api/customers/1"))
 				.andReturn().getResponse();
 		
 		assertThat(response.getStatus()).isEqualTo(HttpStatus.NO_CONTENT.value());
@@ -186,7 +186,7 @@ class CostumerResourceUnitTest {
 	void testDelete_ReturnsStatusNotFound() throws Exception {
 		doThrow(new ResourceNotFoundException(1L)).when(service).delete(1L);
 		
-		MockHttpServletResponse response = mockMvc.perform(delete("/api/costumers/1"))
+		MockHttpServletResponse response = mockMvc.perform(delete("/api/customers/1"))
 				.andReturn().getResponse();
 		
 		assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
@@ -194,11 +194,11 @@ class CostumerResourceUnitTest {
 	
 	@Test
 	void testUpdate_ReturnsStatusOk() throws Exception {
-		when(service.update(costumer, 1L)).thenReturn(costumer);
+		when(service.update(customer, 1L)).thenReturn(customer);
 		
-		MockHttpServletResponse response = mockMvc.perform(put("/api/costumers/1")
+		MockHttpServletResponse response = mockMvc.perform(put("/api/customers/1")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(jsonCostumer.write(costumer).getJson()))
+				.content(jsonCostumer.write(customer).getJson()))
 				.andReturn().getResponse();
 		
 		assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
@@ -206,11 +206,11 @@ class CostumerResourceUnitTest {
 	
 	@Test
 	void testUpdate_ReturnsStatusNotFound() throws Exception {
-		doThrow(new ResourceNotFoundException(2L)).when(service).update(costumer, 2L);
+		doThrow(new ResourceNotFoundException(2L)).when(service).update(customer, 2L);
 		
-		MockHttpServletResponse response = mockMvc.perform(put("/api/costumers/2")
+		MockHttpServletResponse response = mockMvc.perform(put("/api/customers/2")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(jsonCostumer.write(costumer).getJson()))
+				.content(jsonCostumer.write(customer).getJson()))
 				.andReturn().getResponse();
 		
 		assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
@@ -218,15 +218,15 @@ class CostumerResourceUnitTest {
 	
 	@Test
 	void testUpdate_ReturnsCorrectContent() throws Exception {
-		when(service.update(costumer, 1L)).thenReturn(costumer);
+		when(service.update(customer, 1L)).thenReturn(customer);
 		
-		MockHttpServletResponse response = mockMvc.perform(put("/api/costumers/1")
+		MockHttpServletResponse response = mockMvc.perform(put("/api/customers/1")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(jsonCostumer.write(costumer).getJson()))
+				.content(jsonCostumer.write(customer).getJson()))
 				.andReturn().getResponse();
 		response.setCharacterEncoding("UTF-8");
 		
-		assertThat(response.getContentAsString()).isEqualTo(jsonCostumer.write(costumer).getJson());
+		assertThat(response.getContentAsString()).isEqualTo(jsonCostumer.write(customer).getJson());
 	}
 
 }

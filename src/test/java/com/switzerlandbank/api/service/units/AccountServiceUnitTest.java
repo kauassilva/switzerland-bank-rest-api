@@ -6,8 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
-import java.math.BigInteger;
-import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,16 +17,14 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.internal.matchers.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.switzerlandbank.api.entities.Account;
 import com.switzerlandbank.api.entities.Address;
-import com.switzerlandbank.api.entities.Costumer;
+import com.switzerlandbank.api.entities.Customer;
 import com.switzerlandbank.api.entities.enums.Gender;
 import com.switzerlandbank.api.repositories.AccountRepository;
-import com.switzerlandbank.api.repositories.CostumerRepository;
-import com.switzerlandbank.api.services.AccountService;
+import com.switzerlandbank.api.repositories.CustomerRepository;
 import com.switzerlandbank.api.services.BalanceService;
 import com.switzerlandbank.api.services.exceptions.ResourceNotFoundException;
 import com.switzerlandbank.api.services.impls.AccountServiceImpl;
@@ -39,7 +35,7 @@ public class AccountServiceUnitTest {
 	private BalanceService balanceService;
 
 	@Mock
-	private CostumerRepository costumerRepository;
+	private CustomerRepository costumerRepository;
 
 	@Mock
 	private AccountRepository accountRepository;
@@ -50,18 +46,18 @@ public class AccountServiceUnitTest {
 
 	private Account account;
 
-	private Costumer costumer;
+	private Customer customer;
 
 	@BeforeEach
 	void setUp() {
 		MockitoAnnotations.openMocks(this);
-		costumer = new Costumer(null, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"),
+		customer = new Customer(null, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"),
 				Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
 		Address address = new Address(null, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins",
-				"77600000", costumer);
-		costumer.setAddress(address);
-		account = new Account(null, "123456", costumer);
-		costumer.setAccount(account);
+				"77600000", customer);
+		customer.setAddress(address);
+		account = new Account(null, "123456", customer);
+		customer.setAccount(account);
 	}
 
 	@Test
@@ -99,7 +95,7 @@ public class AccountServiceUnitTest {
 	@Test
 	void testInsert() {
 		when(accountRepository.save(account)).thenReturn(account);
-		Account result = accountService.insert(costumer);
+		Account result = accountService.insert(customer);
 		assertEquals(account, result);
 	}
 
