@@ -21,47 +21,48 @@ import com.switzerlandbank.api.repositories.PixKeyRepository;
 import com.switzerlandbank.api.services.PixKeyService;
 import com.switzerlandbank.api.services.exceptions.ResourceNotFoundException;
 
-
 @SpringBootTest
 public class PixKeyServiceIntegrationTest {
-    
-    @Autowired
+
+	@Autowired
 	private PixKeyService pixKeyService;
 
 	@Autowired
 	private PixKeyRepository repository;
 
-    private Account account;
-	
+	private Account account;
+
 	private PixKey pixKey;
 
-    private PixKey pixKeyCPF;
+	private PixKey pixKeyCPF;
 
-    private PixKey pixKeyEmail;
+	private PixKey pixKeyEmail;
 
-    private PixKey pixKeyRandom;
+	private PixKey pixKeyRandom;
 
 	@BeforeEach
 	void setUp() {
-		Customer customer1 = new Customer(null, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
-        Address address1 = new Address(null, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", customer1);
-        customer1.setAddress(address1);
-        account = new Account(1L, "123456", customer1);
+		Customer customer1 = new Customer(null, "João Silva", "12345678910", "Maria Silva",
+				LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
+		Address address1 = new Address(null, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins",
+				"Tocantins", "77600000", customer1);
+		customer1.setAddress(address1);
+		account = new Account(1L, "123456", customer1);
 		customer1.setAccount(account);
 
-
-        pixKey = new PixKey(null, null, KeyType.CPF, account);
+		// objs
+		pixKey = new PixKey(null, null, KeyType.CPF, account);
 		pixKeyCPF = new PixKey(null, null, KeyType.CPF, account);
 		pixKeyEmail = new PixKey(null, null, KeyType.EMAIL, account);
 		pixKeyRandom = new PixKey(null, null, KeyType.RANDOM, account);
 	}
 
-    @Test
+	@Test
 	void testFindAll_ReturnsCorrectContent() {
 		List<PixKey> expectedResult = repository.findAll();
-		
+
 		List<PixKey> result = pixKeyService.findAll();
-		
+
 		assertEquals(expectedResult, result);
 	}
 
@@ -75,29 +76,28 @@ public class PixKeyServiceIntegrationTest {
 		assertEquals(expectedResult, result);
 	}
 
-
-    @Test
+	@Test
 	void testFindById_ReturnCorrectContent() {
 		Long id = 1L;
 
 		pixKey = new PixKey(1L, null, KeyType.CPF, account);
-		
+
 		PixKey result = pixKeyService.findById(id);
-		
+
 		assertEquals(pixKey, result);
 	}
 
 	@Test
 	void testFindById_ThrowsResourceNotFoundException() {
 		Long id = 0L;
-		
+
 		assertThrows(ResourceNotFoundException.class, () -> pixKeyService.findById(id));
 	}
 
 	@Test
 	void testInsert_CorrectContentKeyTypeCPF() {
 
-		PixKey expectedResult = pixKeyService.insert(pixKeyCPF); 
+		PixKey expectedResult = pixKeyService.insert(pixKeyCPF);
 
 		PixKey result = pixKeyService.findById(expectedResult.getId());
 
@@ -108,7 +108,7 @@ public class PixKeyServiceIntegrationTest {
 	@Test
 	void testInsert_CorrectContentKeyTypeEmail() {
 
-		PixKey expectedResult = pixKeyService.insert(pixKeyEmail); 
+		PixKey expectedResult = pixKeyService.insert(pixKeyEmail);
 
 		PixKey result = pixKeyService.findById(expectedResult.getId());
 
@@ -119,7 +119,7 @@ public class PixKeyServiceIntegrationTest {
 	@Test
 	void testInsert_CorrectContentKeyTypeRandom() {
 
-		PixKey expectedResult = pixKeyService.insert(pixKeyRandom); 
+		PixKey expectedResult = pixKeyService.insert(pixKeyRandom);
 
 		PixKey result = pixKeyService.findById(expectedResult.getId());
 
@@ -133,14 +133,14 @@ public class PixKeyServiceIntegrationTest {
 		PixKey pixKey = pixKeyService.insert(pixKeyEmail);
 
 		pixKeyService.delete(pixKey.getId());
-		
+
 		assertThrows(ResourceNotFoundException.class, () -> pixKeyService.findById(pixKey.getId()));
 	}
-	
+
 	@Test
 	void testDelete_ThrowsResourceNotFoundException() {
 		Long id = 0L;
-		
+
 		assertThrows(ResourceNotFoundException.class, () -> pixKeyService.delete(id));
 	}
 

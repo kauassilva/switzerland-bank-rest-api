@@ -45,34 +45,35 @@ import com.switzerlandbank.api.services.impls.PixKeyServiceImpl;
 @AutoConfigureJsonTesters
 @ExtendWith(MockitoExtension.class)
 public class PixKeyResourceUnitTest {
-    
+
 	@Autowired
 	private MockMvc mockMvc;
-	
+
 	@MockBean
 	private PixKeyServiceImpl service;
-	
+
 	@Autowired
 	private JacksonTester<PixKey> jsonPixKey;
-	
+
 	@Autowired
 	private JacksonTester<List<PixKey>> jsonPixKeyList;
-	
-    private Account account;
-	private PixKey pixKey;
-    private PixKey pixKeyEmpty;
-    private PixKey pixKeyCPF;
-    private PixKey pixKeyEmail;
-    private PixKey pixKeyRandom;
 
-    @BeforeEach
+	private Account account;
+	private PixKey pixKey;
+	private PixKey pixKeyEmpty;
+	private PixKey pixKeyCPF;
+	private PixKey pixKeyEmail;
+	private PixKey pixKeyRandom;
+
+	@BeforeEach
 	void setUp() {
 
-
-		Customer customer1 = new Customer(null, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
-        Address address1 = new Address(null, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", customer1);
-        customer1.setAddress(address1);
-        account = new Account(1L, "123456", customer1);
+		Customer customer1 = new Customer(null, "João Silva", "12345678910", "Maria Silva",
+				LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
+		Address address1 = new Address(null, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins",
+				"Tocantins", "77600000", customer1);
+		customer1.setAddress(address1);
+		account = new Account(1L, "123456", customer1);
 		customer1.setAccount(account);
 
 		pixKey = new PixKey(1L, null, KeyType.CPF, account);
@@ -83,8 +84,10 @@ public class PixKeyResourceUnitTest {
 		MockitoAnnotations.openMocks(this);
 
 	}
-    
-    @Test
+
+	// buscou na conta de todo mundo tudo relacionado a chave pix e retorna se foi
+	// encontrado
+	@Test
     void testFindAll_ReturnsStatusOk() throws Exception {
 
         when(service.findAll()).thenReturn(Lists.newArrayList(pixKey));
@@ -97,6 +100,7 @@ public class PixKeyResourceUnitTest {
 
     }
 
+	// buscou na conta de todo mundo tudo relacinado a chave pix no json
 	@Test
 	void testFindAll_ReturnsCorrectContent() throws Exception {
         
@@ -110,6 +114,9 @@ public class PixKeyResourceUnitTest {
         assertThat(response.getContentAsString()).isEqualTo(jsonPixKeyList.write(Lists.newArrayList(pixKey)).getJson());
     }
 
+	// buscou na conta de todo mundo tudo mas ninguem existia entao retornou json
+	// vazio
+
 	@Test
 	void testFindAll_ReturnEmptyContent() throws Exception {
 		when(service.findAll()).thenReturn(Collections.emptyList());
@@ -122,36 +129,40 @@ public class PixKeyResourceUnitTest {
         assertThat(response.getContentAsString()).isEqualTo(jsonPixKeyList.write(Collections.emptyList()).getJson());
 	}
 
+	// buscou em uma unica conta uma lista de chaves pix e retorna se achou
+
 	@Test
 	void testFindByAccountId_ReturnsStatusOk() throws Exception {
 
 		List<PixKey> expectedPixKeys = Arrays.asList(pixKey, pixKeyEmpty);
 
 		when(service.findByAccountId(1L)).thenReturn(expectedPixKeys);
-		
-        MockHttpServletResponse response = mockMvc.perform(get("/api/pixkeys/account/1")
+
+		MockHttpServletResponse response = mockMvc.perform(get("/api/pixkeys/account/1")
 				.accept(MediaType.APPLICATION_JSON))
 				.andReturn().getResponse();
 		response.setCharacterEncoding("UTF-8");
-		
+
 		assertThat(response.getContentAsString()).isEqualTo(jsonPixKeyList.write(expectedPixKeys).getJson());
 	}
 
+	// buscou em uma unica conta uma lista de chaves pix e retorna o json
 	@Test
 	void testFindByAccountId_ReturnsCorrectContent() throws Exception {
 
 		List<PixKey> expectedPixKeys = Arrays.asList(pixKey, pixKeyEmpty);
 
-        when(service.findByAccountId(1L)).thenReturn(expectedPixKeys);
+		when(service.findByAccountId(1L)).thenReturn(expectedPixKeys);
 
-        MockHttpServletResponse response = mockMvc.perform(get("/api/pixkeys/account/1")
+		MockHttpServletResponse response = mockMvc.perform(get("/api/pixkeys/account/1")
 				.accept(MediaType.APPLICATION_JSON))
 				.andReturn().getResponse();
 		response.setCharacterEncoding("UTF-8");
-		
-		assertThat(response.getContentAsString()).isEqualTo(jsonPixKeyList.write(expectedPixKeys).getJson());
-    }
 
+		assertThat(response.getContentAsString()).isEqualTo(jsonPixKeyList.write(expectedPixKeys).getJson());
+	}
+
+	// chamou o id nao achou entao retornou uma lista vazia porque nao achou o id
 	@Test
 	void testFindByAccountId_ReturnsEmptyList() throws Exception {
 		when(service.findByAccountId(1L)).thenReturn(Collections.emptyList());
@@ -164,6 +175,7 @@ public class PixKeyResourceUnitTest {
         assertThat(response.getContentAsString()).isEqualTo(jsonPixKeyList.write(Collections.emptyList()).getJson());
 	}
 
+	// procura o id se achar mostra o status ok
 	@Test
 	void testFindById_ReturnsStatusOk() throws Exception {
 		when(service.findById(anyLong())).thenReturn(pixKey);
@@ -175,6 +187,7 @@ public class PixKeyResourceUnitTest {
 		assertEquals(HttpStatus.OK.value(), response.getStatus());
 	}
 
+	// procura o id se nao achar mostra o status nao encontrado
 	@Test
 	void testFindById_ReturnsStatusNotFound() throws Exception {
 		when(service.findById(1L)).thenThrow(ResourceNotFoundException.class);
@@ -185,7 +198,8 @@ public class PixKeyResourceUnitTest {
 		
 		assertEquals(HttpStatus.NOT_FOUND.value(), response.getStatus());
 	}
-	
+
+	// procura uma chave pix e retorna pro json
 	@Test
 	void testFindById_ReturnsCorrectContent() throws Exception {
         when(service.findById(1L)).thenReturn(pixKey);
@@ -198,6 +212,7 @@ public class PixKeyResourceUnitTest {
 		assertThat(response.getContentAsString()).isEqualTo(jsonPixKey.write(pixKey).getJson());
     }
 
+	// verifica se o obj foi criado e retorna o status
 	@Test
 	void testInsert_ReturnsStatusCreated() throws Exception {
 		when(service.insert(pixKey)).thenReturn(pixKey);
@@ -210,21 +225,23 @@ public class PixKeyResourceUnitTest {
 		assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
 	}
 
+	// verifica se chave pix (obj) foi inserida de forma incorreta
 	@Test
 	void testInsert_ReturnsStatusBadRequest() throws Exception {
-		PixKey wrongPixKey= new PixKey(null, null, KeyType.CPF, null);
-		
+		PixKey wrongPixKey = new PixKey(null, null, KeyType.CPF, null);
+
 		when(service.insert(wrongPixKey)).thenReturn(wrongPixKey);
-		
+
 		MockHttpServletResponse response = mockMvc.perform(post("/api/pixkeys")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonPixKey.write(wrongPixKey).getJson()))
 				.andReturn().getResponse();
 		response.setCharacterEncoding("UTF-8");
-		
+
 		assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
 	}
 
+	// verifica se a chave pix cpf foi incerida corretamente
 	@Test
 	void testInsert_ReturnsCorrectContentPixKeyTypeCPF() throws Exception {
 		when(service.insert(pixKeyCPF)).thenReturn(pixKeyCPF);
@@ -238,6 +255,7 @@ public class PixKeyResourceUnitTest {
 		assertThat(response.getContentAsString()).isEqualTo(jsonPixKey.write(pixKeyCPF).getJson());
 	}
 
+	// verifica se a chave pix email foi incerida corretamente
 	@Test
 	void testInsert_ReturnsCorrectContentPixKeyTypeEmail() throws Exception {
 		when(service.insert(pixKeyEmail)).thenReturn(pixKeyEmail);
@@ -251,6 +269,7 @@ public class PixKeyResourceUnitTest {
 		assertThat(response.getContentAsString()).isEqualTo(jsonPixKey.write(pixKeyEmail).getJson());
 	}
 
+	// verifica se a chave pix aleatoria foi inserida corretamente
 	@Test
 	void testInsert_ReturnsCorrectContentPixKeyTypeRandom() throws Exception {
 		when(service.insert(pixKeyRandom)).thenReturn(pixKeyRandom);
@@ -263,24 +282,27 @@ public class PixKeyResourceUnitTest {
 		
 		assertThat(response.getContentAsString()).isEqualTo(jsonPixKey.write(pixKeyRandom).getJson());
 	}
-	
+
+	// verifica se a chave pix foi deletada
 	@Test
 	void testDelete_ReturnsStatusNoContent() throws Exception {
 		doNothing().when(service).delete(1L);
-		
+
 		MockHttpServletResponse response = mockMvc.perform(delete("/api/pixkeys/1"))
 				.andReturn().getResponse();
-		
+
 		assertThat(response.getStatus()).isEqualTo(HttpStatus.NO_CONTENT.value());
 	}
 
+	// vai retornar nao encontrado porq a chave pix que ele tentou encontrar nao foi
+	// encontrado
 	@Test
 	void testDelete_ReturnsStatusNotFound() throws Exception {
 		doThrow(new ResourceNotFoundException(1L)).when(service).delete(1L);
-		
+
 		MockHttpServletResponse response = mockMvc.perform(delete("/api/pixkeys/1"))
 				.andReturn().getResponse();
-		
+
 		assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
 	}
 }

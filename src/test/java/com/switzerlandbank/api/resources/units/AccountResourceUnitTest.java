@@ -32,12 +32,12 @@ import com.switzerlandbank.api.resources.AccountResource;
 import com.switzerlandbank.api.services.exceptions.ResourceNotFoundException;
 import com.switzerlandbank.api.services.impls.AccountServiceImpl;
 
-@WebMvcTest(controllers = AccountResource.class)
-@AutoConfigureJsonTesters
-@ExtendWith(MockitoExtension.class)
+@WebMvcTest(controllers = AccountResource.class) //indicar que o teste esta focado nos controllers
+@AutoConfigureJsonTesters //auto configura o json tests
+@ExtendWith(MockitoExtension.class) //usa a extenção mockito para junit5.
 class AccountResourceUnitTest {
 
-	@Autowired
+	@Autowired //invejta
 	private MockMvc mockMvc;
 
 	@MockBean
@@ -51,7 +51,7 @@ class AccountResourceUnitTest {
 	
 	private Account account;
 	
-	@BeforeEach
+	@BeforeEach  //simula
 	void setUp() {
 		Customer customer = new Customer(1L, "João Silva", "12345678910", "Maria Silva", LocalDate.parse("1980-07-15"), Gender.MALE, "joaosilva@example.com", "JoaoSilva123");
 		Address address = new Address(1L, "Av. Castelo Branco", "1416", "Centro", "Paraíso do Tocantins", "Tocantins", "77600000", customer);
@@ -59,7 +59,8 @@ class AccountResourceUnitTest {
 		account = new Account(1L, "123456", customer);
 		customer.setAccount(account);
 	}
-	
+	// Verifica a chamada para /api/accounts retorna um status HTTP 200 (OK)
+	// e se o corpo da resposta contém o JSON esperado.
 	@Test
 	void testFindAll_ReturnsStatusOk() throws Exception {
 		when(service.findAll()).thenReturn(Lists.newArrayList(account));
@@ -71,6 +72,7 @@ class AccountResourceUnitTest {
 		assertEquals(HttpStatus.OK.value(), response.getStatus());
 	}
 	
+	// verifica se o corpo contém a lista de contas no formato JSON.
 	@Test
 	void testFindAll_ReturnsCorrectBody() throws Exception {
 		when(service.findAll()).thenReturn(Lists.newArrayList(account));
@@ -82,7 +84,9 @@ class AccountResourceUnitTest {
 		
 		assertEquals(jsonAccountList.write(Lists.newArrayList(account)).getJson(), response.getContentAsString());
 	}
-	
+
+	//Testa retorno de lista de contas é vazia.
+
 	@Test
 	void testFindAll_ReturnsEmptyBody() throws Exception {
 		when(service.findAll()).thenReturn(Collections.emptyList());
@@ -95,6 +99,8 @@ class AccountResourceUnitTest {
 		assertEquals(jsonAccountList.write(Collections.emptyList()).getJson(), response.getContentAsString());
 	}
 	
+	// Testa se a chamada para /api/accounts/1 retorna um status
+
 	@Test
 	void testFindById_ReturnsStatusOk() throws Exception {
 		when(service.findById(anyLong())).thenReturn(account);
@@ -106,6 +112,7 @@ class AccountResourceUnitTest {
 		assertEquals(HttpStatus.OK.value(), response.getStatus());
 	}
 	
+	// Testa se retorna um status HTTP 404 (Not Found) quando a conta não é encontrada.
 	@Test
 	void testFindById_ReturnsStatusNotFound() throws Exception {
 		when(service.findById(1L)).thenThrow(ResourceNotFoundException.class);
@@ -116,7 +123,8 @@ class AccountResourceUnitTest {
 		
 		assertEquals(HttpStatus.NOT_FOUND.value(), response.getStatus());
 	}
-	
+
+	//Testa se o corpo da resposta contém o JSON da conta correta quando a conta é encontrada.
 	@Test
 	void testFindById_ReturnsCorrectContent() throws Exception {
 		when(service.findById(1L)).thenReturn(account);
