@@ -55,7 +55,15 @@ public class PixKeyRepositoryIntegrationTest {
     }
 
     @Test
-    void finddById(){
+    void findByAccountIdButIdIsNotFound(){
+        accountRepository.save(account);
+        PixKey savedPixKeys = pixKeyRepository.save(pixKeyEmpty);
+        List<PixKey> findAccount = pixKeyRepository.findByAccountId(savedPixKeys.getId() +1L);
+        assertTrue(findAccount.isEmpty());
+    }
+
+    @Test
+    void findById(){
         accountRepository.save(account);
          PixKey savedPixKeys = pixKeyRepository.save(pixKeyEmpty);
          Optional<PixKey>  foundPixKey = pixKeyRepository.findById(savedPixKeys.getId());
