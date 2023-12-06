@@ -1,5 +1,7 @@
 # Switzerland Bank - REST API
 
+![banner](src/main/resources/static/images/banner.png)
+
 Switzerland Bank is a simulation of a digital bank developed with Spring Boot and Java. The project offers a solution to make payments through PIX, manage customer profiles, view the statement, and request credit and debit cards. With Switzerland Bank, users can enjoy a modern and efficient banking experience.
 
 The project was developed as part of the disciplines of *Software Management and Quality* and *Models, Methods and Techniques of Software Engineering*, of the *Computer Science* course. The objective of the project was to take any open source project and refactor it, including (if necessary) GRASP and SOLID principles, and Design Patterns; in addition, perform unit and integration tests, and ensure at least 80% code coverage.
@@ -42,6 +44,14 @@ A major refactoring done was to separate the web pages from the API so that the 
 ## Tests
 
 Unit and integration tests were performed on the controller, service and repositories layers. This totaled **186** tests, and a coverage of **93.1%** of the code.
+
+186 Tests
+:---:
+![186 tests](src/main/resources/static/images/junit.png)
+
+Coverage of 93.1%
+:---:
+![coverage](src/main/resources/static/images/coverage.png)
 
 <br>
 
