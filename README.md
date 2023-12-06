@@ -6,7 +6,7 @@ Switzerland Bank is a simulation of a digital bank developed with Spring Boot an
 
 The project was developed as part of the disciplines of *Software Management and Quality* and *Models, Methods and Techniques of Software Engineering*, of the *Computer Science* course. The objective of the project was to take any open source project and refactor it, including (if necessary) GRASP and SOLID principles, and Design Patterns; in addition, perform unit and integration tests, and ensure at least 80% code coverage.
 
-The URL of Switzerland Banl before the refactorings and tests: https://github.com/kauassilva/Switzerland_Bank
+The URL of Switzerland Bank before the refactorings and tests: https://github.com/kauassilva/Switzerland_Bank
 
 <br>
 
